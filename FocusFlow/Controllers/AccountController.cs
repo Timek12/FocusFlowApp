@@ -1,5 +1,6 @@
 ﻿using FocusFlow.Data;
 using FocusFlow.Models;
+using FocusFlow.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,9 +24,16 @@ namespace FocusFlow.Controllers
             _roleManager = roleManager;
         }
 
-        public IActionResult Login()
+        public IActionResult Login(string returnUrl = null)
         {
-            return View();
+            returnUrl ??= Url.Content("~/");
+
+            LoginVM loginVM = new()
+            {
+                RedirectUrl = returnUrl,
+            };
+
+            return View(loginVM);
         }
         public IActionResult Register()
         {
