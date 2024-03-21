@@ -37,7 +37,7 @@ namespace FocusFlow.Controllers
 
             return View(loginVM);
         }
-        public  IActionResult Register()
+        public  IActionResult Register(string returnUrl = null)
         {
             if(!_roleManager.RoleExistsAsync(SD.Role_Admin).GetAwaiter().GetResult())
             {
@@ -51,7 +51,8 @@ namespace FocusFlow.Controllers
                 {
                     Text = u.Name,
                     Value = u.Name
-                })
+                }),
+                RedirectUrl = returnUrl
             };
 
             return View(registerVM);
