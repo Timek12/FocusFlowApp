@@ -58,5 +58,54 @@ namespace FocusFlow.Controllers
             return View(registerVM);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterVM registerVM)
+        {
+            ApplicationUser user = new()
+            {
+                Name = registerVM.Name,
+                Email = registerVM.Email,
+                NormalizedEmail = registerVM.Email.ToUpper(),
+                PhoneNumber = registerVM.PhoneNumber,
+                EmailConfirmed = true,
+                UserName = registerVM.Email,
+                CreatedAt = DateTime.UtcNow,
+            };
+
+            var result = await _userManager.CreateAsync(user, registerVM.Password);
+               
+            if(result.Succeeded)
+            {
+                if(!string.IsNullOrEmpty(registerVM.Role))
+                {
+                    await _userManager.AddToRoleAsync(user, registerVM.Role);
+                }
+                else
+                {
+                    await _userManager.AddToRoleAsync(user, SD.Role_User);
+                }
+
+                await _signInManager.SignInAsync(user, isPersistent: false);
+                if(!string.IsNullOrEmpty(registerVM.RedirectUrl)) 
+                {
+                    return LocalRedirect(registerVM.RedirectUrl);
+                }
+
+                return RedirectToAction("Index", "Home");
+            }
+
+            foreach(var error in result.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
+            }
+
+            registerVM.RoleList = _roleManager.Roles.Select(u => new SelectListItem
+            {
+                Text = u.Name,
+                Value = u.Name
+            });
+
+            return View(registerVM);
+        }
     }
 }
