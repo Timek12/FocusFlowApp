@@ -107,5 +107,31 @@ namespace FocusFlow.Controllers
 
             return View(registerVM);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginVM loginVM)
+        {
+            if(ModelState.IsValid)
+            {
+                var result = await _signInManager
+                    .PasswordSignInAsync(loginVM.Email, loginVM.Password, loginVM.RememberMe, false);
+
+                if (result.Succeeded)
+                {
+                    if (!string.IsNullOrEmpty(loginVM.RedirectUrl))
+                    {
+                        return LocalRedirect(loginVM.RedirectUrl);
+                    }
+
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Invalid email or password.");
+                }
+            }
+
+            return View(loginVM);
+        }
     }
 }
