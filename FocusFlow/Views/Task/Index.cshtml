@@ -1,9 +1,18 @@
 ﻿@model IEnumerable<UserTask>
 
 <div class="col-12 text-center">
-    Task List
+    <h1>
+        Task List
+    </h1>
 </div>
 <div class="p-3">
+    <div class="row-pb-3">
+        <div class="col-6 offset-6 text-end">
+            <a class="btn btn-success" asp-controller="Task" asp-action="Create">
+                Create Task
+            </a>
+        </div>
+    </div>
     <table class="table table-striped">
         <thead class="thead-light">
             <tr>
