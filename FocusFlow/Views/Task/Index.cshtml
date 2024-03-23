@@ -1,0 +1,44 @@
+﻿@model IEnumerable<UserTask>
+
+<div class="col-12 text-center">
+    Task List
+</div>
+<div class="p-3">
+    <table class="table table-striped">
+        <thead class="thead-light">
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Satus</th>
+                <th>Importance</th>
+                <th>Created At</th>
+                <th>Deadline</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var task in Model)
+            {
+                <tr>
+                    <td>@task.Name</td>
+                    <td>@task.Description</td>
+                    <td>@task.Status</td>
+                    <td>@task.Importance</td>
+                    <td>@task.CreatedAt</td>
+                    <td>@task.Deadline</td>
+                    <td>
+                        <a class="btn btn-warning" asp-controller="Task" asp-action="Update" asp-route-id="@task.TaskId">
+                            Update
+                        </a>
+                    </td>
+                    <td>
+                        <a class="btn btn-danger" asp-controller="Task" asp-action="Delete" asp-route-id="@task.TaskId">
+                            Delete
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
