@@ -8,45 +8,45 @@
             </h1>
         </div>
         <div class="card-body d-flex justify-content-center">
-            <form class="row">
+            <form method="post" class="row">
                 <div class="form-group form-floating col-md-8 offset-md-2 mb-3">
-                    <input asp-for="@Model.UserTask.Name" class="form-control" placeholder="Name">
-                    <label asp-for="@Model.UserTask.Name" class="form-label"></label>
-                    <span asp-validation-for="@Model.UserTask.Name" class="text-danger"></span>
+                    <input asp-for="@Model.Name" class="form-control" placeholder="Name">
+                    <label asp-for="@Model.Name" class="form-label"></label>
+                    <span asp-validation-for="@Model.Name" class="text-danger"></span>
                 </div>
 
                 <div class="form-group form-floating col-md-8 offset-md-2 mb-3">
-                    <input asp-for="@Model.UserTask.Description" class="form-control" placeholder="Description">
-                    <label asp-for="@Model.UserTask.Description"></label>
-                    <span asp-validation-for="@Model.UserTask.Description" class="text-danger"></span>
+                    <input asp-for="@Model.Description" class="form-control" placeholder="Description">
+                    <label asp-for="@Model.Description"></label>
+                    <span asp-validation-for="@Model.Description" class="text-danger"></span>
                 </div>
 
                 <div class="form-group form-floating col-md-8 offset-md-2 mb-3">
-                    <select asp-for="@Model.UserTask.Status" asp-items="@Model.StatusList" class="form-select">
+                    <select asp-for="@Model.Status" asp-items="@Model.StatusList" class="form-select">
                     </select>
                     <label asp-for="@Model.StatusList"></label>
-                    <span asp-validation-for="@Model.UserTask.Status"></span>
+                    <span asp-validation-for="@Model.Status"></span>
                 </div>
 
                 <div class="form-group form-floating col-md-8 offset-md-2 mb-3">
-                    <select asp-for="@Model.UserTask.Importance" asp-items="@Model.ImportanceList" class="form-select">
+                    <select asp-for="@Model.Importance" asp-items="@Model.ImportanceList" class="form-select">
                         <option disabled selected>Select Importance</option>
                     </select>
                     <label asp-for="@Model.ImportanceList"></label>
-                    <span asp-validation-for="@Model.UserTask.Importance"></span>
+                    <span asp-validation-for="@Model.Importance"></span>
                 </div>
 
                 <div class="form-group form-floating col-md-8 offset-md-2 mb-3">
-                    <input asp-for="@Model.UserTask.Deadline" type="datetime-local" class="form-control">
-                    <label asp-for="@Model.UserTask.Deadline"></label>
-                    <span asp-validation-for="@Model.UserTask.Deadline" class="text-danger"></span>
+                    <input asp-for="@Model.Deadline" type="datetime-local" class="form-control">
+                    <label asp-for="@Model.Deadline"></label>
+                    <span asp-validation-for="@Model.Deadline" class="text-danger"></span>
                 </div>
                 <div class="btn btn-group">
                     <div class="col-md-6">
                         <button type="submit" class="btn btn-primary col-md-6 w-80">Create</button>
                     </div>
                     <div class="col-md-6">
-                        <button type="submit" class="btn btn-secondary col-md-6 w-80" asp-action="Index">Cancel</button>
+                        <button class="btn btn-secondary col-md-6 w-80" asp-action="Index">Cancel</button>
                     </div>
                 </div>
 
@@ -55,3 +55,6 @@
     </div>
 </div>
 
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
