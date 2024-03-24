@@ -1,42 +1,50 @@
 ﻿@model UserTaskVM
 
-<div class="card text-center">
-    <div class="card-header">
-        <h1>
-            Create Task
-        </h1>
-    </div>
-    <div class="card-body d-flex justify-content-center">
-        <form class="row">
-            <div class="form-group col-md-8 offset-md-2">
-                <label for="inputEmail4" class="form-label">Name</label>
-                <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
+<div class="d-flex justify-content-center">
+        <div class="card text-center">
+            <div class="card-header">
+                <h1>
+                    Create Task
+                </h1>
             </div>
+            <div class="card-body d-flex justify-content-center">
+                <form class="row">
+                    <div class="form-group form-floating col-md-8 offset-md-2 mb-3">
+                        <input asp-for="@Model.UserTask.Name" class="form-control" placeholder="Name">
+                        <label asp-for="@Model.UserTask.Name" class="form-label"></label>
+                        <span asp-validation-for="@Model.UserTask.Name" class="text-danger"></span>
+                    </div>
 
-            <div class="form-group col-md-8 offset-md-2">
-                <label for="inputPassword4">Description</label>
-                <input type="password" class="form-control" id="inputPassword4" placeholder="Password">
-            </div>
-            <div class="form-group col-md-8 offset-md-2">
-                <label for="inputEmail4">Status</label>
-                <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
-            </div>
+                    <div class="form-group form-floating col-md-8 offset-md-2 mb-3">
+                        <input asp-for="@Model.UserTask.Description" class="form-control" placeholder="Description">
+                        <label asp-for="@Model.UserTask.Description"></label>
+                        <span asp-validation-for="@Model.UserTask.Description" class="text-danger"></span>
+                    </div>
 
-            <div class="form-group col-md-8 offset-md-2">
-                <label for="inputPassword4">Importance</label>
-                <input type="password" class="form-control" id="inputPassword4" placeholder="Password">
-            </div>
+                    <div class="form-group form-floating col-md-8 offset-md-2 mb-3">
+                        <select asp-for="@Model.UserTask.Status" asp-items="@Model.StatusList" class="form-select">
+                        </select>
+                        <label asp-for="@Model.StatusList"></label>
+                        <span asp-validation-for="@Model.UserTask.Status"></span>
+                    </div>
 
-            <div class="form-group col-md-8 offset-md-2">
-                <label for="inputPassword4">Deadline</label>
-                <input type="password" class="form-control" id="inputPassword4" placeholder="Password">
-            </div>
+                    <div class="form-group form-floating col-md-8 offset-md-2 mb-3">
+                        <select asp-for="@Model.UserTask.Importance" asp-items="@Model.ImportanceList" class="form-select">
+                            <option disabled selected>Select Importance</option>
+                        </select>
+                        <label asp-for="@Model.ImportanceList"></label>
+                        <span asp-validation-for="@Model.UserTask.Importance"></span>
+                    </div>
 
-            <button type="submit" class="btn btn-primary">Sign in</button>
-        </form>
-    </div>
-    <div class="card-footer text-muted">
-        2 days ago
-    </div>
+                    <div class="form-group form-floating col-md-8 offset-md-2 mb-3">
+                        <input asp-for="@Model.UserTask.Deadline" type="datetime-local" class="form-control">
+                        <label asp-for="@Model.UserTask.Deadline"></label>
+                        <span asp-validation-for="@Model.UserTask.Deadline" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary col-md-8 offset-md-2">Sign in</button>
+                </form>
+            </div>
+        </div>
 </div>
 
