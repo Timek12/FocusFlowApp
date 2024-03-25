@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using static FocusFlow.Utility.SD;
@@ -18,6 +20,7 @@ namespace FocusFlow.Models
         public DateTime Deadline { get; set; }
         public string UserId { get; set; }
         [ForeignKey("UserId")]
+        [ValidateNever]
         public ApplicationUser User { get; set; }
     }
 }
