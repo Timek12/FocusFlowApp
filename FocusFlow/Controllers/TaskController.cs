@@ -90,7 +90,7 @@ namespace FocusFlow.Controllers
         {
             if (id < 1)
             {
-                RedirectToAction("Error", "Home");
+                return RedirectToAction("Error", "Home");
             }
 
             UserTaskUpdateVM userTaskUpdateVM = new()
@@ -116,7 +116,7 @@ namespace FocusFlow.Controllers
 
             if (userTaskUpdateVM.UserTask is null)
             {
-                RedirectToAction("Error", "Home");
+                return RedirectToAction("Error", "Home");
             }
 
             return View(userTaskUpdateVM);
@@ -127,7 +127,7 @@ namespace FocusFlow.Controllers
         {
             if (userTaskUpdateVM is null || userTaskUpdateVM.UserTask is null)
             {
-                RedirectToAction("Error", "Home");
+                return RedirectToAction("Error", "Home");
             }
 
             if (ModelState.IsValid)
@@ -153,6 +153,26 @@ namespace FocusFlow.Controllers
             });
 
             return View(userTaskUpdateVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (id < 1)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+
+            var userTaskFromDb = await _db.Tasks.FirstOrDefaultAsync(u => u.TaskId == id);
+            if (userTaskFromDb == null)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+
+            _db.Tasks.Remove(userTaskFromDb);
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }
