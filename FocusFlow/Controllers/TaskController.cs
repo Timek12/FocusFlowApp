@@ -21,9 +21,14 @@ namespace FocusFlow.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            IEnumerable<UserTask> tasks = _db.Tasks;
+            var currentUser = await _userManager.GetUserAsync(User);
+
+            bool isAdmin = await _userManager.IsInRoleAsync(currentUser, Role_Admin);
+            
+            IEnumerable<UserTask> tasks = isAdmin ? _db.Tasks : _db.Tasks.Where(u => u.UserId == currentUser.Id);
+
             return View(tasks);
         }
 
