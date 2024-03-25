@@ -86,20 +86,42 @@ namespace FocusFlow.Controllers
             return View(userTaskVM);
         }
 
-        public async Task<IActionResult> Update(int? id)
+        public async Task<IActionResult> Update(int id)
         {
             if (id < 1)
             {
                 RedirectToAction("Error", "Home");
             }
 
-            UserTask? taskFromDb = await _db.Tasks.FirstOrDefaultAsync(u => u.TaskId == id);
-            if (taskFromDb == null)
+            UserTaskUpdateVM userTaskUpdateVM = new()
+            {
+                UserTask = await _db.Tasks.FirstOrDefaultAsync(u => u.TaskId == id),
+                
+                StatusList = Enum.GetValues(typeof(Utility.SD.TaskStatus))
+                .Cast<Utility.SD.TaskStatus>().Select(e => new SelectListItem
+                {
+                    Value = ((int)e).ToString(),
+                    Text = e.ToString()
+                }),
+
+                ImportanceList = Enum.GetValues(typeof(TaskImportance))
+                .Cast<TaskImportance>().Select(e => new SelectListItem
+                {
+                    Value = ((int)e).ToString(),
+                    Text = e.ToString()
+                })
+            };
+
+            userTaskUpdateVM.UserTask.TaskId = id;
+
+            if (userTaskUpdateVM.UserTask is null)
             {
                 RedirectToAction("Error", "Home");
             }
 
-            return View(taskFromDb);
+            return View(userTaskUpdateVM);
         }
+
+        
     }
 }
