@@ -11,6 +11,7 @@
             <form method="post" class="row">
                 <input asp-for="@Model.UserTask.UserId" hidden />
                 <input asp-for="@Model.UserTask.TaskId" hidden />
+                <input asp-for="@Model.UserTask.CreatedAt" hidden />
                 <div class="form-group form-floating col-md-8 offset-md-2 mb-3">
                     <input asp-for="@Model.UserTask.Name" class="form-control" placeholder="Name">
                     <label asp-for="@Model.UserTask.Name" class="form-label"></label>
