@@ -42,7 +42,7 @@
                         </a>
                     </td>
                     <td>
-                        <a class="btn btn-danger" asp-controller="Task" asp-action="Delete" asp-route-id="@task.TaskId">
+                        <a class="btn btn-danger delete-task" data-id="@task.TaskId">
                             Delete
                         </a>
                     </td>
@@ -51,3 +51,7 @@
         </tbody>
     </table>
 </div>
+
+@section Scripts {
+    <script src="~/js/deleteTask.js" asp-append-version="true"></script>
+}                        
