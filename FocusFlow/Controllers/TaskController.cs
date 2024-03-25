@@ -122,6 +122,37 @@ namespace FocusFlow.Controllers
             return View(userTaskUpdateVM);
         }
 
-        
+        [HttpPost]
+        public async Task<IActionResult> Update(UserTaskUpdateVM userTaskUpdateVM)
+        {
+            if (userTaskUpdateVM is null || userTaskUpdateVM.UserTask is null)
+            {
+                RedirectToAction("Error", "Home");
+            }
+
+            if (ModelState.IsValid)
+            {
+                _db.Tasks.Update(userTaskUpdateVM.UserTask);
+                await _db.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+
+
+            userTaskUpdateVM.StatusList = Enum.GetValues(typeof(Utility.SD.TaskStatus))
+                .Cast<Utility.SD.TaskStatus>().Select(e => new SelectListItem
+                {
+                    Value = ((int)e).ToString(),
+                    Text = e.ToString()
+                });
+
+            userTaskUpdateVM.ImportanceList = Enum.GetValues(typeof(TaskImportance))
+            .Cast<TaskImportance>().Select(e => new SelectListItem
+            {
+                Value = ((int)e).ToString(),
+                Text = e.ToString()
+            });
+
+            return View(userTaskUpdateVM);
+        }
     }
 }
