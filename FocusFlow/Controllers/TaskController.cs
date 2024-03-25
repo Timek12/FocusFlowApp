@@ -29,7 +29,7 @@ namespace FocusFlow.Controllers
 
         public IActionResult Create()
         {
-            UserTaskVM userTaskVM = new()
+            UserTaskCreateVM userTaskVM = new()
             {
                 StatusList = Enum.GetValues(typeof(Utility.SD.TaskStatus))
                 .Cast<Utility.SD.TaskStatus>().Select(e => new SelectListItem
@@ -49,7 +49,7 @@ namespace FocusFlow.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(UserTaskVM userTaskVM)
+        public async Task<IActionResult> Create(UserTaskCreateVM userTaskVM)
         {
             if (ModelState.IsValid)
             {

@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FocusFlow.ViewModels
 {
-    public class UserTaskVM
+    public class UserTaskCreateVM
     {
         [Required]
         public string Name { get; set; }
