@@ -7,5 +7,7 @@ namespace FocusFlow.Models
         public string Name { get; set; }
         public DateTime CreatedAt { get; set; }
         public ICollection<UserTask> Tasks { get; set; } = new List<UserTask>();
+        public List<PomodoroSession>? PomodoroSessions { get; set; }
+
     }
 }
