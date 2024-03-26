@@ -22,10 +22,5 @@ namespace FocusFlow.Models
         [ForeignKey(nameof(UserId))]
         [ValidateNever]
         public ApplicationUser User { get; set; }
-        
-        public int? PomodoroTimerId { get; set; }
-        [ForeignKey(nameof(PomodoroTimerId))]
-        [ValidateNever]
-        public PomodoroTimer PomodoroTimer { get; set; }
     }
 }
