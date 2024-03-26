@@ -11,7 +11,7 @@ namespace FocusFlow.Data
 
         public DbSet<UserTask> Tasks { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
-        public DbSet<PomodoroTimer> PomodoroTimers { get; set; }
+        public DbSet<PomodoroSession> PomodoroSessions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
