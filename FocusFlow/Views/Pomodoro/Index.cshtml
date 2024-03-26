@@ -1,4 +1,6 @@
-﻿<div class="justify-content-center border">
+﻿@model PomodoroSession
+
+<div class="justify-content-center border">
     <div class="card text-center">
         <div class="card-header">
             <h1>
@@ -8,10 +10,10 @@
         <div class="card-body justify-content-center">
             <div class="row mt-3">
                 <div class="col-md-4 text-center">
-                    <button class="btn btn-primary w-75">START</button>
+                    <button id="startTimerButton" class="btn btn-primary w-75">START</button>
                 </div>
                 <div class="col-md-4 text-center">
-                    <button class="btn btn-primary w-75">STOP</button>
+                    <button id="stopTimerButton" class="btn btn-primary w-75">STOP</button>
                 </div>
                 <div class="col-md-4 text-center">
                     <button class="btn btn-primary w-75">RESET</button>
@@ -19,8 +21,47 @@
             </div>
 
             <div class="col-md-10 offset-md-1">
-                <h1 style="font-size: 7em">XX:XX:XX</h1>
+                <h1 id="time" style="font-size: 7em">@Model.Duration.ToString(@"hh\:mm\:ss")</h1>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    let duration = @Model.Duration.TotalSeconds;
+    let timer = duration;
+    let display = document.querySelector('#time');
+    let startTimerButton = document.querySelector('#startTimerButton');
+    let stopTimerButton = document.querySelector('#stopTimerButton');
+    let timerInterval;
+
+    startTimerButton.addEventListener('click', function () {
+        startTimer(duration, display);
+    });
+
+    stopTimerButton.addEventListener('click', function () {
+        stopTimer();
+    });
+
+    function startTimer(duration, display) {
+        let minutes, seconds;
+        timerInterval =  setInterval(function () {
+            minutes = parseInt(timer / 60, 10);
+            seconds = parseInt(timer % 60, 10);
+
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            display.textContent = minutes + ":" + seconds;
+
+            if (--timer < 0) {
+                timer = duration;
+            }
+        }, 1000);
+    }
+
+    function stopTimer() {
+        clearInterval(timerInterval);
+    }
+
+</script>
