@@ -19,8 +19,13 @@ namespace FocusFlow.Models
         public DateTime CreatedAt { get; set; }
         public DateTime Deadline { get; set; }
         public string UserId { get; set; }
-        [ForeignKey("UserId")]
+        [ForeignKey(nameof(UserId))]
         [ValidateNever]
         public ApplicationUser User { get; set; }
+        
+        public int? PomodoroTimerId { get; set; }
+        [ForeignKey(nameof(PomodoroTimerId))]
+        [ValidateNever]
+        public PomodoroTimer PomodoroTimer { get; set; }
     }
 }
