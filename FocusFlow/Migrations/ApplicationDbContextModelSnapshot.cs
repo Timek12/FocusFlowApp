@@ -94,41 +94,6 @@ namespace FocusFlow.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("FocusFlow.Models.PomodoroTimer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<TimeSpan>("BreakDuration")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan>("Duration")
-                        .HasColumnType("time");
-
-                    b.Property<DateTime>("EndTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("isBreak")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("isRunning")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PomodoroTimers");
-                });
-
             modelBuilder.Entity("FocusFlow.Models.UserTask", b =>
                 {
                     b.Property<int>("TaskId")
@@ -154,9 +119,6 @@ namespace FocusFlow.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PomodoroTimerId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -166,18 +128,16 @@ namespace FocusFlow.Migrations
 
                     b.HasKey("TaskId");
 
-                    b.HasIndex("PomodoroTimerId");
-
                     b.HasIndex("UserId");
 
-                    b.ToTable("Tasks");
+                    b.ToTable("Tasks", (string)null);
 
                     b.HasData(
                         new
                         {
                             TaskId = 1,
-                            CreatedAt = new DateTime(2024, 3, 26, 1, 21, 4, 365, DateTimeKind.Local).AddTicks(3573),
-                            Deadline = new DateTime(2024, 4, 2, 1, 21, 4, 365, DateTimeKind.Local).AddTicks(3625),
+                            CreatedAt = new DateTime(2024, 3, 23, 21, 8, 13, 387, DateTimeKind.Local).AddTicks(369),
+                            Deadline = new DateTime(2024, 3, 30, 21, 8, 13, 387, DateTimeKind.Local).AddTicks(413),
                             Description = "Create a responsive design for the homepage",
                             Importance = 1,
                             Name = "Design Homepage",
@@ -187,8 +147,8 @@ namespace FocusFlow.Migrations
                         new
                         {
                             TaskId = 2,
-                            CreatedAt = new DateTime(2024, 3, 26, 1, 21, 4, 365, DateTimeKind.Local).AddTicks(3632),
-                            Deadline = new DateTime(2024, 3, 29, 1, 21, 4, 365, DateTimeKind.Local).AddTicks(3633),
+                            CreatedAt = new DateTime(2024, 3, 23, 21, 8, 13, 387, DateTimeKind.Local).AddTicks(418),
+                            Deadline = new DateTime(2024, 3, 26, 21, 8, 13, 387, DateTimeKind.Local).AddTicks(419),
                             Description = "Migrate the existing database to the new server",
                             Importance = 2,
                             Name = "Database Migration",
@@ -198,8 +158,8 @@ namespace FocusFlow.Migrations
                         new
                         {
                             TaskId = 3,
-                            CreatedAt = new DateTime(2024, 3, 26, 1, 21, 4, 365, DateTimeKind.Local).AddTicks(3636),
-                            Deadline = new DateTime(2024, 4, 7, 1, 21, 4, 365, DateTimeKind.Local).AddTicks(3638),
+                            CreatedAt = new DateTime(2024, 3, 23, 21, 8, 13, 387, DateTimeKind.Local).AddTicks(421),
+                            Deadline = new DateTime(2024, 4, 4, 21, 8, 13, 387, DateTimeKind.Local).AddTicks(422),
                             Description = "Fix the reported bugs in the user management module",
                             Importance = 0,
                             Name = "Bug Fixing",
@@ -209,8 +169,8 @@ namespace FocusFlow.Migrations
                         new
                         {
                             TaskId = 4,
-                            CreatedAt = new DateTime(2024, 3, 26, 1, 21, 4, 365, DateTimeKind.Local).AddTicks(3640),
-                            Deadline = new DateTime(2024, 4, 5, 1, 21, 4, 365, DateTimeKind.Local).AddTicks(3642),
+                            CreatedAt = new DateTime(2024, 3, 23, 21, 8, 13, 387, DateTimeKind.Local).AddTicks(424),
+                            Deadline = new DateTime(2024, 4, 2, 21, 8, 13, 387, DateTimeKind.Local).AddTicks(424),
                             Description = "Integrate the payment gateway API",
                             Importance = 0,
                             Name = "API Integration",
@@ -220,8 +180,8 @@ namespace FocusFlow.Migrations
                         new
                         {
                             TaskId = 5,
-                            CreatedAt = new DateTime(2024, 3, 26, 1, 21, 4, 365, DateTimeKind.Local).AddTicks(3644),
-                            Deadline = new DateTime(2024, 3, 27, 1, 21, 4, 365, DateTimeKind.Local).AddTicks(3646),
+                            CreatedAt = new DateTime(2024, 3, 23, 21, 8, 13, 387, DateTimeKind.Local).AddTicks(426),
+                            Deadline = new DateTime(2024, 3, 24, 21, 8, 13, 387, DateTimeKind.Local).AddTicks(427),
                             Description = "Conduct performance testing on the new release",
                             Importance = 1,
                             Name = "Performance Testing",
@@ -231,8 +191,8 @@ namespace FocusFlow.Migrations
                         new
                         {
                             TaskId = 6,
-                            CreatedAt = new DateTime(2024, 3, 26, 1, 21, 4, 365, DateTimeKind.Local).AddTicks(3649),
-                            Deadline = new DateTime(2024, 4, 9, 1, 21, 4, 365, DateTimeKind.Local).AddTicks(3650),
+                            CreatedAt = new DateTime(2024, 3, 23, 21, 8, 13, 387, DateTimeKind.Local).AddTicks(429),
+                            Deadline = new DateTime(2024, 4, 6, 21, 8, 13, 387, DateTimeKind.Local).AddTicks(430),
                             Description = "Review the code of the new features",
                             Importance = 2,
                             Name = "Code Review",
@@ -376,17 +336,11 @@ namespace FocusFlow.Migrations
 
             modelBuilder.Entity("FocusFlow.Models.UserTask", b =>
                 {
-                    b.HasOne("FocusFlow.Models.PomodoroTimer", "PomodoroTimer")
-                        .WithMany("Tasks")
-                        .HasForeignKey("PomodoroTimerId");
-
                     b.HasOne("FocusFlow.Models.ApplicationUser", "User")
                         .WithMany("Tasks")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("PomodoroTimer");
 
                     b.Navigation("User");
                 });
@@ -443,11 +397,6 @@ namespace FocusFlow.Migrations
                 });
 
             modelBuilder.Entity("FocusFlow.Models.ApplicationUser", b =>
-                {
-                    b.Navigation("Tasks");
-                });
-
-            modelBuilder.Entity("FocusFlow.Models.PomodoroTimer", b =>
                 {
                     b.Navigation("Tasks");
                 });
