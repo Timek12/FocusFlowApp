@@ -16,7 +16,7 @@
                     <button id="stopTimerButton" class="btn btn-primary w-75">STOP</button>
                 </div>
                 <div class="col-md-4 text-center">
-                    <button class="btn btn-primary w-75">RESET</button>
+                    <button id="resetTimerButton" class="btn btn-primary w-75">RESET</button>
                 </div>
             </div>
 
@@ -35,6 +35,7 @@
     let display = document.querySelector('#time');
     let startTimerButton = document.querySelector('#startTimerButton');
     let stopTimerButton = document.querySelector('#stopTimerButton');
+    let resetTimerButton = document.querySelector('#resetTimerButton');
     let timerInterval;
 
     startTimerButton.addEventListener('click', function () {
@@ -45,32 +46,47 @@
         stopTimer();
     });
 
+    resetTimerButton.addEventListener('click', function () {
+        resetTimer();
+    });
+
     function startTimer(duration, display) {
         let hours, minutes, seconds;
         timerInterval = setInterval(function () {
-            hours = parseInt(timer / 3600, 10);
-            minutes = parseInt(timer / 60, 10);
-            seconds = parseInt(timer % 60, 10);
-
-            hours = hours < 10 ? "0" + hours : hours;
-            minutes = minutes < 10 ? "0" + minutes : minutes;
-            seconds = seconds < 10 ? "0" + seconds : seconds;
-
-            if (timer >= 3600) {
-                display.textContent = hours + ":" + minutes + ":" + seconds;
-            }
-            else {
-                display.textContent = minutes + ":" + seconds;
-            }
+            display.textContent = formatTime(timer);
 
             if (--timer < 0) {
-                timer = duration;
+                // ajax call to server
+                stopTimer();
             }
         }, 1000);
     }
 
     function stopTimer() {
         clearInterval(timerInterval);
+    }
+
+    function resetTimer() {
+        timer = duration;
+        stopTimer();
+        display.textContent = formatTime(timer);
+    }
+
+    function formatTime(timeInSeconds) {
+        let hours = parseInt(timeInSeconds / 3600, 10);
+        let minutes = parseInt(timeInSeconds / 60, 10);
+        let seconds = parseInt(timeInSeconds % 60, 10);
+
+        hours = hours < 10 ? "0" + hours : hours;
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        if (timeInSeconds >= 3600) {
+            return hours + ":" + minutes + ":" + seconds;
+        }
+        else {
+            return minutes + ":" + seconds;
+        }
     }
 
 </script>
