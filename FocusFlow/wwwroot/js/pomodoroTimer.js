@@ -7,13 +7,16 @@ let startTimerButton = document.querySelector('#startTimerButton');
 let stopTimerButton = document.querySelector('#stopTimerButton');
 let resetTimerButton = document.querySelector('#resetTimerButton');
 let timerInterval;
+let isPaused;
 
 startTimerButton.addEventListener('click', function () {
+    isPaused = false;
     startTimer(duration, display);
     this.disabled = true;
 });
 
 stopTimerButton.addEventListener('click', function () {
+    isPaused = true;
     stopTimer();
     startTimerButton.disabled = false;
 });
@@ -23,7 +26,9 @@ resetTimerButton.addEventListener('click', function () {
     startTimerButton.disabled = false;
 });
 
-function startTimer(duration, display) {
+async function startTimer(duration, display) {
+    clearTimeout(timerInterval);
+
     if (timer === duration) {
         let startTime = new Date();
 
@@ -38,22 +43,28 @@ function startTimer(duration, display) {
             .then(data => { })
             .catch(error => { })
     }
-
-    let hours, minutes, seconds;
-    timerInterval = setInterval(function () {
+    const intervalFunc = async () => {
         display.textContent = formatTime(timer);
 
-        if (--timer < 0) {
-            // ajax call to server
-            stopTimer();
+        if (!isPaused) {
+            if (--timer < 0) {
+                await resetTimer();
+                finalizeSession();
+                startTimerButton.disabled = false;
+            }
+            else {
+                timerInterval = setTimeout(intervalFunc, 1000);
+            }
         }
-    }, 1000);
-}
+    }
+
+    timerInterval = setTimeout(intervalFunc, 1000);
+};
 
 function stopTimer() {
     let stopTime = new Date();
 
-    fetch('/Pomodoro/StopTimer', {
+    return fetch('/Pomodoro/StopTimer', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -63,13 +74,15 @@ function stopTimer() {
         .then(response => response.json())
         .then(data => { })
         .catch(error => { })
+        .finally(() => {
+            clearInterval(timerInterval);
 
-    clearInterval(timerInterval);
+        })
 }
 
-function resetTimer() {
+async function resetTimer() {
+    await stopTimer();
     timer = duration;
-    stopTimer();
     display.textContent = formatTime(timer);
 }
 
@@ -88,4 +101,16 @@ function formatTime(timeInSeconds) {
     else {
         return minutes + ":" + seconds;
     }
+}
+
+function finalizeSession() {
+    fetch('/Pomodoro/FinalizeSession', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    })
+        .then(response => response.json())
+        .then(data => { })
+        .catch(error => { })
 }
