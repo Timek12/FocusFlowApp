@@ -10,18 +10,18 @@
         <div class="card-body justify-content-center">
             <div class="row mt-3">
                 <div class="col-md-4 text-center">
-                    <button id="startTimerButton" class="btn btn-primary w-75">START</button>
+                    <button  class="btn btn-dark w-75">POMODORO</button>
                 </div>
                 <div class="col-md-4 text-center">
-                    <button id="stopTimerButton" class="btn btn-primary w-75">STOP</button>
+                    <button class="btn btn-dark w-75">SHORT BREAK</button>
                 </div>
                 <div class="col-md-4 text-center">
-                    <button id="resetTimerButton" class="btn btn-primary w-75">RESET</button>
+                    <button class="btn btn-dark w-75">LONG BREAK</button>
                 </div>
             </div>
 
-            <div class="col-md-10 offset-md-1">
-                <h1 id="time" style="font-size: 7em">
+            <div class="col-md-10 offset-md-1 mt-3">
+                <h1 id="time" style="font-size: 10em">
                     @if(Model.Duration.TotalHours >= 1)
                     {
                         @Model.Duration.ToString(@"hh\:mm\:ss")
@@ -31,6 +31,18 @@
                         @Model.Duration.ToString(@"mm\:ss")
                     }
                 </h1>
+            </div>
+
+            <div class="row mt-5">
+                <div class="col-md-4 text-center">
+                    <button id="startTimerButton" class="btn btn-dark w-75">START</button>
+                </div>
+                <div class="col-md-4 text-center">
+                    <button id="stopTimerButton" class="btn btn-dark w-75">STOP</button>
+                </div>
+                <div class="col-md-4 text-center">
+                    <button id="resetTimerButton" class="btn btn-dark w-75">RESET</button>
+                </div>
             </div>
         </div>
     </div>
