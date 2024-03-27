@@ -51,6 +51,20 @@
     });
 
     function startTimer(duration, display) {
+        let startTime = new Date();
+
+        fetch('/Pomodoro/StartTimer', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(startTime.toISOString())
+        })
+
+        .then(response => response.json())
+        .then(data => { })
+        .catch(error => { })
+        
         let hours, minutes, seconds;
         timerInterval = setInterval(function () {
             display.textContent = formatTime(timer);
