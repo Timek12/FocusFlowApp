@@ -5,6 +5,7 @@
     "noEmitOnError": true,
     "removeComments": false,
     "sourceMap": true,
+    "module": "ES6",
     "target": "es5",
     "lib": [ "es2022", "dom" ],
     "outDir": "wwwroot/js"
