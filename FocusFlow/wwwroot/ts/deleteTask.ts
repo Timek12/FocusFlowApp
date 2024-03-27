@@ -1,8 +1,8 @@
-﻿import Swal from 'sweetalert2'
+﻿declare var Swal: any;
+
 $(document).ready(function () {
     $('.delete-task').click(function () {
         const taskId: string = $(this).data('id');
-        console.log(taskId)
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -37,4 +37,4 @@ $(document).ready(function () {
             }
         });
     })
-})
+});

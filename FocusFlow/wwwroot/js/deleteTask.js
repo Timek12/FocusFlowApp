@@ -1,11 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var sweetalert2_1 = require("sweetalert2");
 $(document).ready(function () {
     $('.delete-task').click(function () {
         var taskId = $(this).data('id');
-        console.log(taskId);
-        sweetalert2_1.default.fire({
+        Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
             icon: "warning",
@@ -20,7 +16,7 @@ $(document).ready(function () {
                     type: 'POST',
                     data: { id: taskId },
                     success: function () {
-                        sweetalert2_1.default.fire({
+                        Swal.fire({
                             title: "Deleted!",
                             text: "Your file has been deleted.",
                             icon: "success"
@@ -29,7 +25,7 @@ $(document).ready(function () {
                         });
                     },
                     error: function () {
-                        sweetalert2_1.default.fire({
+                        Swal.fire({
                             title: "Error!",
                             text: "Something went wrong.",
                             icon: "error"
