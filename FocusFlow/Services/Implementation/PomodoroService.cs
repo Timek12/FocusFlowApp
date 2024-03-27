@@ -22,7 +22,7 @@ namespace FocusFlow.Services.Implementation
                 PomodoroSession session = new()
                 {
                     UserId = userId,
-                    Duration = new TimeSpan(0, 25, 0),
+                    Duration = new TimeSpan(0, 1, 0),
                     isCompleted = false,
                     isRunning = false,
                     isBreak = false,
@@ -48,8 +48,8 @@ namespace FocusFlow.Services.Implementation
 
         public PomodoroSession? GetLatestSession(string userId)
         {
-            return _db.PomodoroSessions.Where(u => u.UserId == userId)
-                    .OrderByDescending(u => u.StartTime).FirstOrDefault();
+            return _db.PomodoroSessions.Where(u => u.UserId == userId && u.isCompleted == false)
+                    .OrderBy(u => u.SessionId).FirstOrDefault();
         }
 
     }
