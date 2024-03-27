@@ -40,29 +40,34 @@
 
     startTimerButton.addEventListener('click', function () {
         startTimer(duration, display);
+        this.disabled = true;
     });
 
     stopTimerButton.addEventListener('click', function () {
         stopTimer();
+        startTimerButton.disabled = false;
     });
 
     resetTimerButton.addEventListener('click', function () {
         resetTimer();
+        startTimerButton.disabled = false;
     });
 
     function startTimer(duration, display) {
-        let startTime = new Date();
+        if (timer === duration) {
+            let startTime = new Date();
 
-        fetch('/Pomodoro/StartTimer', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(startTime.toISOString())
-        })
-            .then(response => response.json())
-            .then(data => { })
-            .catch(error => { })
+            fetch('/Pomodoro/StartTimer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(startTime.toISOString())
+            })
+                .then(response => response.json())
+                .then(data => { })
+                .catch(error => { })
+        }
 
         let hours, minutes, seconds;
         timerInterval = setInterval(function () {
@@ -85,9 +90,9 @@
             },
             body: JSON.stringify(stopTime.toISOString())
         })
-        .then(response => response.json())
-        .then(data => { })
-        .catch(error => { })
+            .then(response => response.json())
+            .then(data => { })
+            .catch(error => { })
 
         clearInterval(timerInterval);
     }
