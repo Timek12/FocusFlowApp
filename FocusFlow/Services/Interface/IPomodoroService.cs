@@ -6,5 +6,6 @@ namespace FocusFlow.Services.Interface
     {
         public PomodoroSession? CreateSession(string userId);
         public PomodoroSession? GetLatestSession(string userId);
+        public void UpdateSession(PomodoroSession session);
     }
 }
