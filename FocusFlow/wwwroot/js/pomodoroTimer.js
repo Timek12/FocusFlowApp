@@ -42,8 +42,12 @@ var display = document.querySelector('#time');
 var startTimerButton = document.querySelector('#startTimerButton');
 var stopTimerButton = document.querySelector('#stopTimerButton');
 var resetTimerButton = document.querySelector('#resetTimerButton');
+var pomodoroButton = document.querySelector('#pomodoroButton');
+var shortBreakButton = document.querySelector('#shortBreakButton');
+var longBreakButton = document.querySelector('#longBreakButton');
 var timerInterval;
 var isPaused;
+var PomodoroMode = 0 /* Mode.Pomodoro */;
 startTimerButton.addEventListener('click', function () {
     isPaused = false;
     startTimer(duration, display);
@@ -58,13 +62,28 @@ resetTimerButton.addEventListener('click', function () {
     resetTimer();
     startTimerButton.disabled = false;
 });
+pomodoroButton.addEventListener('click', function () {
+    PomodoroMode = 0 /* Mode.Pomodoro */;
+    timer = duration;
+    display.textContent = formatTime(timer);
+});
+shortBreakButton.addEventListener('click', function () {
+    PomodoroMode = 1 /* Mode.ShortBreak */;
+    timer = 300; // 5 minutes
+    display.textContent = formatTime(timer);
+});
+longBreakButton.addEventListener('click', function () {
+    PomodoroMode = 2 /* Mode.LongBreak */;
+    timer = 600; // 10 minutes
+    display.textContent = formatTime(timer);
+});
 function startTimer(duration, display) {
     return __awaiter(this, void 0, void 0, function () {
         var startTime, intervalFunc;
         var _this = this;
         return __generator(this, function (_a) {
             clearTimeout(timerInterval);
-            if (timer === duration) {
+            if (timer === duration && PomodoroMode == 0 /* Mode.Pomodoro */) {
                 startTime = new Date();
                 fetch('/Pomodoro/StartTimer', {
                     method: 'POST',
@@ -84,18 +103,21 @@ function startTimer(duration, display) {
                     switch (_a.label) {
                         case 0:
                             display.textContent = formatTime(timer);
-                            if (!!isPaused) return [3 /*break*/, 3];
-                            if (!(--timer < 0)) return [3 /*break*/, 2];
+                            if (!!isPaused) return [3 /*break*/, 4];
+                            if (!(--timer < 0)) return [3 /*break*/, 3];
+                            if (!(PomodoroMode == 0 /* Mode.Pomodoro */)) return [3 /*break*/, 2];
                             return [4 /*yield*/, resetTimer()];
                         case 1:
                             _a.sent();
                             finalizeSession();
-                            startTimerButton.disabled = false;
-                            return [3 /*break*/, 3];
+                            _a.label = 2;
                         case 2:
+                            startTimerButton.disabled = false;
+                            return [3 /*break*/, 4];
+                        case 3:
                             timerInterval = setTimeout(intervalFunc, 1000);
-                            _a.label = 3;
-                        case 3: return [2 /*return*/];
+                            _a.label = 4;
+                        case 4: return [2 /*return*/];
                     }
                 });
             }); };
@@ -106,22 +128,27 @@ function startTimer(duration, display) {
 }
 ;
 function stopTimer() {
-    var stopTime = new Date();
-    return fetch('/Pomodoro/StopTimer', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(stopTime.toISOString())
-    })
-        .then(function (response) { return response.json(); })
-        .then(function (data) { })
-        .catch(function (error) {
-        console.error("An error occurred:", error);
-    })
-        .finally(function () {
+    if (PomodoroMode == 0 /* Mode.Pomodoro */) {
+        var stopTime = new Date();
+        return fetch('/Pomodoro/StopTimer', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(stopTime.toISOString())
+        })
+            .then(function (response) { return response.json(); })
+            .then(function (data) { })
+            .catch(function (error) {
+            console.error("An error occurred:", error);
+        })
+            .finally(function () {
+            clearInterval(timerInterval);
+        });
+    }
+    else {
         clearInterval(timerInterval);
-    });
+    }
 }
 function resetTimer() {
     return __awaiter(this, void 0, void 0, function () {
@@ -130,7 +157,19 @@ function resetTimer() {
                 case 0: return [4 /*yield*/, stopTimer()];
                 case 1:
                     _a.sent();
-                    timer = duration;
+                    switch (PomodoroMode) {
+                        case 0 /* Mode.Pomodoro */:
+                            timer = duration;
+                            break;
+                        case 1 /* Mode.ShortBreak */:
+                            timer = 300;
+                            break;
+                        case 2 /* Mode.LongBreak */:
+                            timer = 600;
+                            break;
+                    }
+                    if (PomodoroMode = 0 /* Mode.Pomodoro */) {
+                    }
                     display.textContent = formatTime(timer);
                     return [2 /*return*/];
             }

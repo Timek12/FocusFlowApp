@@ -6,8 +6,18 @@ let display: HTMLElement = document.querySelector('#time');
 let startTimerButton: HTMLButtonElement = document.querySelector('#startTimerButton') as HTMLButtonElement;
 let stopTimerButton: HTMLButtonElement = document.querySelector('#stopTimerButton') as HTMLButtonElement;
 let resetTimerButton: HTMLButtonElement = document.querySelector('#resetTimerButton') as HTMLButtonElement;
+let pomodoroButton: HTMLButtonElement = document.querySelector('#pomodoroButton') as HTMLButtonElement;
+let shortBreakButton: HTMLButtonElement = document.querySelector('#shortBreakButton') as HTMLButtonElement;
+let longBreakButton: HTMLButtonElement = document.querySelector('#longBreakButton') as HTMLButtonElement;
 let timerInterval: number;
 let isPaused: boolean;
+const enum Mode {
+    Pomodoro,
+    ShortBreak,
+    LongBreak
+}
+
+let PomodoroMode: Mode = Mode.Pomodoro;
 
 startTimerButton.addEventListener('click', function () {
     isPaused = false;
@@ -26,10 +36,28 @@ resetTimerButton.addEventListener('click', function () {
     startTimerButton.disabled = false;
 });
 
+pomodoroButton.addEventListener('click', function () {
+    PomodoroMode = Mode.Pomodoro;
+    timer = duration;
+    display.textContent = formatTime(timer);
+});
+
+shortBreakButton.addEventListener('click', function () {
+    PomodoroMode = Mode.ShortBreak;
+    timer = 300; // 5 minutes
+    display.textContent = formatTime(timer);
+});
+
+longBreakButton.addEventListener('click', function () {
+    PomodoroMode = Mode.LongBreak;
+    timer = 600; // 10 minutes
+    display.textContent = formatTime(timer);
+});
+
 async function startTimer(duration: number, display: HTMLElement): Promise<void> {
     clearTimeout(timerInterval);
 
-    if (timer === duration) {
+    if (timer === duration && PomodoroMode == Mode.Pomodoro) {
         let startTime = new Date();
 
         fetch('/Pomodoro/StartTimer', {
@@ -45,13 +73,16 @@ async function startTimer(duration: number, display: HTMLElement): Promise<void>
                 console.error("An error occurred:", error);
             })
     }
+
     const intervalFunc = async () => {
         display.textContent = formatTime(timer);
 
         if (!isPaused) {
             if (--timer < 0) {
-                await resetTimer();
-                finalizeSession();
+                if (PomodoroMode == Mode.Pomodoro) {
+                    await resetTimer();
+                    finalizeSession();
+                }
                 startTimerButton.disabled = false;
             }
             else {
@@ -64,28 +95,46 @@ async function startTimer(duration: number, display: HTMLElement): Promise<void>
 };
 
 function stopTimer(): Promise<void> {
-    let stopTime = new Date();
+    if (PomodoroMode == Mode.Pomodoro) {
+        let stopTime = new Date();
 
-    return fetch('/Pomodoro/StopTimer', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(stopTime.toISOString())
-    })
-        .then(response => response.json())
-        .then(data => { })
-        .catch(error => {
-            console.error("An error occurred:", error)
+        return fetch('/Pomodoro/StopTimer', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(stopTime.toISOString())
         })
-        .finally(() => {
-            clearInterval(timerInterval);
-        })
+            .then(response => response.json())
+            .then(data => { })
+            .catch(error => {
+                console.error("An error occurred:", error)
+            })
+            .finally(() => {
+                clearInterval(timerInterval);
+            })
+    }
+    else {
+        clearInterval(timerInterval);
+    }
 }
 
 async function resetTimer(): Promise<void> {
     await stopTimer();
-    timer = duration;
+    switch (PomodoroMode) {
+        case Mode.Pomodoro:
+            timer = duration;
+            break;
+        case Mode.ShortBreak:
+            timer = 300;
+            break;    
+        case Mode.LongBreak:
+            timer = 600;
+            break;
+    }
+    if (PomodoroMode = Mode.Pomodoro) {
+
+    }
     display.textContent = formatTime(timer);
 }
 
