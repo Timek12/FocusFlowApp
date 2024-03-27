@@ -24,8 +24,6 @@ namespace FocusFlow.Services.Implementation
                     UserId = userId,
                     Duration = new TimeSpan(0, 1, 0),
                     isCompleted = false,
-                    isRunning = false,
-                    isBreak = false,
                 };
 
                 _db.PomodoroSessions.Add(session);

@@ -12,8 +12,6 @@ namespace FocusFlow.Models
         public DateTime EndTime { get; set; }
         public TimeSpan Duration { get; set; }
         public TimeSpan BreakDuration { get; set; }
-        public bool isRunning { get; set; }
-        public bool isBreak {  get; set; }
         public bool isCompleted { get; set; }
         public List<UserTask>? Tasks { get; set; }
 
