@@ -22,7 +22,14 @@
 
             <div class="col-md-10 offset-md-1">
                 <h1 id="time" style="font-size: 7em">
-                    @Model.Duration.ToString(@"hh\:mm\:ss")
+                    @if(Model.Duration.TotalHours >= 1)
+                    {
+                        @Model.Duration.ToString(@"hh\:mm\:ss")
+                    }
+                    else
+                    {
+                        @Model.Duration.ToString(@"mm\:ss")
+                    }
                 </h1>
             </div>
         </div>
