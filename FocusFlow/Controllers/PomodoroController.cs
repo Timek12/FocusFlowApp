@@ -42,7 +42,6 @@ namespace FocusFlow.Controllers
             }
 
 
-            // concurrency conflict
             PomodoroSession.StartTime = DateTime.Parse(startTime);
             //PomodoroSession.isRunning = true;
             _pomodoroService.UpdateSession(PomodoroSession);
@@ -60,7 +59,6 @@ namespace FocusFlow.Controllers
                 return Json(new { success = false });
             }
 
-            // concurrency conflict
             PomodoroSession.EndTime = DateTime.Parse(stopTime);
             //PomodoroSession.isRunning = false;
             _pomodoroService.UpdateSession(PomodoroSession);
@@ -68,5 +66,20 @@ namespace FocusFlow.Controllers
             return Json(new { success = true });
         }
 
+        [HttpPost]
+        public IActionResult FinalizeSession()
+        {
+            string userId = _userManager.GetUserId(User);
+            PomodoroSession = _pomodoroService.GetLatestSession(userId);
+            if (PomodoroSession is null)
+            {
+                return Json(new { success = false });
+            }
+
+            PomodoroSession.isCompleted = true;
+            _pomodoroService.UpdateSession(PomodoroSession);
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
