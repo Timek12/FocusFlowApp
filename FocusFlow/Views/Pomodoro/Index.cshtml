@@ -60,11 +60,10 @@
             },
             body: JSON.stringify(startTime.toISOString())
         })
+            .then(response => response.json())
+            .then(data => { })
+            .catch(error => { })
 
-        .then(response => response.json())
-        .then(data => { })
-        .catch(error => { })
-        
         let hours, minutes, seconds;
         timerInterval = setInterval(function () {
             display.textContent = formatTime(timer);
@@ -77,6 +76,19 @@
     }
 
     function stopTimer() {
+        let stopTime = new Date();
+
+        fetch('/Pomodoro/StopTimer', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(stopTime.toISOString())
+        })
+        .then(response => response.json())
+        .then(data => { })
+        .catch(error => { })
+
         clearInterval(timerInterval);
     }
 
