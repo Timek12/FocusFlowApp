@@ -31,7 +31,26 @@ namespace FocusFlow.Controllers
             return View(PomodoroSession);
         }
 
+        [HttpPost]
+        public IActionResult StartTimer([FromBody] string startTime)
+        {
+            string userId = _userManager.GetUserId(User);
+            PomodoroSession = _pomodoroService.GetLatestSession(userId);
+            if(PomodoroSession is null)
+            {
+                return Json(new { success = false});
+            }
 
+            if (!PomodoroSession.isRunning) 
+            {
+                // concurrency conflict
+                PomodoroSession.StartTime = DateTime.Parse(startTime);
+                PomodoroSession.isRunning = true;
+                _pomodoroService.UpdateSession(PomodoroSession);
+            }
+
+            return Json(new { success = true });
+        }
 
     }
 }
