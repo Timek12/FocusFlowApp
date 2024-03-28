@@ -1,5 +1,4 @@
-﻿using FocusFlow.Data;
-using FocusFlow.Models;
+﻿using FocusFlow.Models;
 using FocusFlow.Services.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -41,9 +40,7 @@ namespace FocusFlow.Controllers
                 return Json(new { success = false });
             }
 
-
             PomodoroSession.StartTime = DateTime.Parse(startTime);
-            //PomodoroSession.isRunning = true;
             _pomodoroService.UpdateSession(PomodoroSession);
 
             return Json(new { success = true });
@@ -60,7 +57,6 @@ namespace FocusFlow.Controllers
             }
 
             PomodoroSession.EndTime = DateTime.Parse(stopTime);
-            //PomodoroSession.isRunning = false;
             _pomodoroService.UpdateSession(PomodoroSession);
 
             return Json(new { success = true });

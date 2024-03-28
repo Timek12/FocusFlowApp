@@ -1,9 +1,6 @@
 ﻿using FocusFlow.Data;
 using FocusFlow.Models;
 using FocusFlow.Services.Interface;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace FocusFlow.Services.Implementation
 {
@@ -49,6 +46,5 @@ namespace FocusFlow.Services.Implementation
             return _db.PomodoroSessions.Where(u => u.UserId == userId && u.isCompleted == false)
                     .OrderBy(u => u.SessionId).FirstOrDefault();
         }
-
     }
 }
