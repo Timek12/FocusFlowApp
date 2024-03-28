@@ -1,6 +1,6 @@
 using FocusFlow.Data;
 using FocusFlow.Models;
-using FocusFlow.Services.Implementation;
+using FocusFlow.Repository;
 using FocusFlow.Services.Interface;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -16,8 +16,8 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
-builder.Services.AddScoped<IPomodoroService, PomodoroService>();
-builder.Services.AddScoped<ITaskService, TaskService>();
+builder.Services.AddScoped<IPomodoroRepository, PomodoroRepository>();
+builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 
 var app = builder.Build();
 
