@@ -1,5 +1,4 @@
-﻿using FocusFlow.Data;
-using FocusFlow.Models;
+﻿using FocusFlow.Models;
 using FocusFlow.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -13,11 +12,11 @@ namespace FocusFlow.Controllers
     [Authorize]
     public class TaskController : Controller
     {
-        private readonly ITaskRepository _taskService;
+        private readonly ITaskRepository _taskRepository;
         private readonly UserManager<ApplicationUser> _userManager;
-        public TaskController(ITaskRepository taskService, UserManager<ApplicationUser> userManager)
+        public TaskController(ITaskRepository taskRepository, UserManager<ApplicationUser> userManager)
         {
-            _taskService = taskService;
+            _taskRepository = taskRepository;
             _userManager = userManager;
         }
 
@@ -27,7 +26,7 @@ namespace FocusFlow.Controllers
 
             bool isAdmin = await _userManager.IsInRoleAsync(currentUser, Role_Admin);
 
-            IEnumerable<UserTask> tasks = _taskService.GetAllTasks(currentUser.Id, isAdmin);
+            IEnumerable<UserTask> tasks = _taskRepository.GetAllTasks(currentUser.Id, isAdmin);
 
             return View(tasks);
         }
@@ -69,7 +68,7 @@ namespace FocusFlow.Controllers
                     UserId = _userManager.GetUserId(User)
                 };
 
-                await _taskService.AddTask(userTask);
+                await _taskRepository.AddTask(userTask);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -100,7 +99,7 @@ namespace FocusFlow.Controllers
 
             UserTaskUpdateVM userTaskUpdateVM = new()
             {
-                UserTask = await _taskService.GetTaskById(id),
+                UserTask = await _taskRepository.GetTaskById(id),
                 
                 StatusList = Enum.GetValues(typeof(Utility.SD.TaskStatus))
                 .Cast<Utility.SD.TaskStatus>().Select(e => new SelectListItem
@@ -137,7 +136,7 @@ namespace FocusFlow.Controllers
 
             if (ModelState.IsValid)
             {
-                await _taskService.UpdateTask(userTaskUpdateVM.UserTask);
+                await _taskRepository.UpdateTask(userTaskUpdateVM.UserTask);
                 return RedirectToAction(nameof(Index));
             }
 
@@ -168,13 +167,13 @@ namespace FocusFlow.Controllers
             }
 
 
-            var userTaskFromDb = await _taskService.GetTaskById(id);
+            var userTaskFromDb = await _taskRepository.GetTaskById(id);
             if (userTaskFromDb == null)
             {
                 return RedirectToAction("Error", "Home");
             }
 
-            await _taskService.RemoveTask(userTaskFromDb);
+            await _taskRepository.RemoveTask(userTaskFromDb);
 
             return RedirectToAction(nameof(Index));
         }
