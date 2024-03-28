@@ -2,7 +2,7 @@
 
 namespace FocusFlow.Services.Interface
 {
-    public interface IPomodoroService
+    public interface IPomodoroRepository
     {
         public PomodoroSession? CreateSession(string userId);
         public PomodoroSession? GetLatestSession(string userId);

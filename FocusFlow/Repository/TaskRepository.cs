@@ -3,12 +3,12 @@ using FocusFlow.Models;
 using FocusFlow.Services.Interface;
 using Microsoft.EntityFrameworkCore;
 
-namespace FocusFlow.Services.Implementation
+namespace FocusFlow.Repository
 {
-    public class TaskService : ITaskService
+    public class TaskRepository : ITaskRepository
     {
         private readonly ApplicationDbContext _db;
-        public TaskService(ApplicationDbContext db)
+        public TaskRepository(ApplicationDbContext db)
         {
             _db = db;
         }

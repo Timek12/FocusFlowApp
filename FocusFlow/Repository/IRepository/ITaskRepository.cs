@@ -2,7 +2,7 @@
 
 namespace FocusFlow.Services.Interface
 {
-    public interface ITaskService
+    public interface ITaskRepository
     {
         IEnumerable<UserTask> GetAllTasks(string userId, bool isAdmin);
         Task<UserTask> GetTaskById(int taskId);

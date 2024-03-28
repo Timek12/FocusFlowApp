@@ -9,10 +9,10 @@ namespace FocusFlow.Controllers
     [Authorize]
     public class PomodoroController : Controller
     {
-        private readonly IPomodoroService _pomodoroService;
+        private readonly IPomodoroRepository _pomodoroService;
         private readonly UserManager<ApplicationUser> _userManager;
         public PomodoroSession PomodoroSession { get; private set; }
-        public PomodoroController(IPomodoroService pomodoroService, UserManager<ApplicationUser> userManager)
+        public PomodoroController(IPomodoroRepository pomodoroService, UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
             _pomodoroService = pomodoroService;

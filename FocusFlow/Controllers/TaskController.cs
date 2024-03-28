@@ -13,9 +13,9 @@ namespace FocusFlow.Controllers
     [Authorize]
     public class TaskController : Controller
     {
-        private readonly ITaskService _taskService;
+        private readonly ITaskRepository _taskService;
         private readonly UserManager<ApplicationUser> _userManager;
-        public TaskController(ITaskService taskService, UserManager<ApplicationUser> userManager)
+        public TaskController(ITaskRepository taskService, UserManager<ApplicationUser> userManager)
         {
             _taskService = taskService;
             _userManager = userManager;

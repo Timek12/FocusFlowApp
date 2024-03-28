@@ -2,12 +2,12 @@
 using FocusFlow.Models;
 using FocusFlow.Services.Interface;
 
-namespace FocusFlow.Services.Implementation
+namespace FocusFlow.Repository
 {
-    public class PomodoroService : IPomodoroService
+    public class PomodoroRepository : IPomodoroRepository
     {
         private readonly ApplicationDbContext _db;
-        public PomodoroService(ApplicationDbContext db)
+        public PomodoroRepository(ApplicationDbContext db)
         {
             _db = db;
         }
