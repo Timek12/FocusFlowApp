@@ -1,12 +1,14 @@
-﻿namespace FocusFlow.Services.Interface
+﻿using FocusFlow.Models;
+
+namespace FocusFlow.Services.Interface
 {
     public interface ITaskService
     {
-        IEnumerable<Task> GetAllTasks(string userId);
-        Task GetTaskById(int taskId);
+        IEnumerable<UserTask> GetAllTasks(string userId, bool isAdmin);
+        UserTask GetTaskById(int taskId);
 
-        void AddTask(Task task);
-        void UpdateTask(Task task);
-        void RemoveTask(Task task);
+        void AddTask(UserTask task);
+        void UpdateTask(UserTask task);
+        void RemoveTask(UserTask task);
     }
 }
