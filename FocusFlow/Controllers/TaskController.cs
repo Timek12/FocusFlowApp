@@ -2,22 +2,22 @@
 using FocusFlow.Models;
 using FocusFlow.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using static FocusFlow.Utility.SD;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using FocusFlow.Services.Interface;
 
 namespace FocusFlow.Controllers
 {
     [Authorize]
     public class TaskController : Controller
     {
-        private readonly ApplicationDbContext _db;
+        private readonly ITaskService _taskService;
         private readonly UserManager<ApplicationUser> _userManager;
-        public TaskController(ApplicationDbContext db, UserManager<ApplicationUser> userManager)
+        public TaskController(ITaskService taskService, UserManager<ApplicationUser> userManager)
         {
-            _db = db;
+            _taskService = taskService;
             _userManager = userManager;
         }
 
@@ -26,8 +26,8 @@ namespace FocusFlow.Controllers
             var currentUser = await _userManager.GetUserAsync(User);
 
             bool isAdmin = await _userManager.IsInRoleAsync(currentUser, Role_Admin);
-            
-            IEnumerable<UserTask> tasks = isAdmin ? _db.Tasks : _db.Tasks.Where(u => u.UserId == currentUser.Id);
+
+            IEnumerable<UserTask> tasks = _taskService.GetAllTasks(currentUser.Id, isAdmin);
 
             return View(tasks);
         }
@@ -69,8 +69,8 @@ namespace FocusFlow.Controllers
                     UserId = _userManager.GetUserId(User)
                 };
 
-                _db.Tasks.Add(userTask);
-                await _db.SaveChangesAsync();
+                await _taskService.AddTask(userTask);
+
                 return RedirectToAction(nameof(Index));
             }
 
@@ -100,7 +100,7 @@ namespace FocusFlow.Controllers
 
             UserTaskUpdateVM userTaskUpdateVM = new()
             {
-                UserTask = await _db.Tasks.FirstOrDefaultAsync(u => u.TaskId == id),
+                UserTask = await _taskService.GetTaskById(id),
                 
                 StatusList = Enum.GetValues(typeof(Utility.SD.TaskStatus))
                 .Cast<Utility.SD.TaskStatus>().Select(e => new SelectListItem
@@ -137,8 +137,7 @@ namespace FocusFlow.Controllers
 
             if (ModelState.IsValid)
             {
-                _db.Tasks.Update(userTaskUpdateVM.UserTask);
-                await _db.SaveChangesAsync();
+                await _taskService.UpdateTask(userTaskUpdateVM.UserTask);
                 return RedirectToAction(nameof(Index));
             }
 
@@ -168,14 +167,14 @@ namespace FocusFlow.Controllers
                 return RedirectToAction("Error", "Home");
             }
 
-            var userTaskFromDb = await _db.Tasks.FirstOrDefaultAsync(u => u.TaskId == id);
+
+            var userTaskFromDb = await _taskService.GetTaskById(id);
             if (userTaskFromDb == null)
             {
                 return RedirectToAction("Error", "Home");
             }
 
-            _db.Tasks.Remove(userTaskFromDb);
-            await _db.SaveChangesAsync();
+            await _taskService.RemoveTask(userTaskFromDb);
 
             return RedirectToAction(nameof(Index));
         }
