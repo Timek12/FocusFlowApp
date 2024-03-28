@@ -6,6 +6,8 @@ using static FocusFlow.Utility.SD;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using FocusFlow.Services.Interface;
+using FocusFlow.DTOs;
+using Newtonsoft.Json;
 
 namespace FocusFlow.Controllers
 {
@@ -14,6 +16,7 @@ namespace FocusFlow.Controllers
     {
         private readonly ITaskRepository _taskRepository;
         private readonly UserManager<ApplicationUser> _userManager;
+
         public TaskController(ITaskRepository taskRepository, UserManager<ApplicationUser> userManager)
         {
             _taskRepository = taskRepository;
@@ -176,6 +179,25 @@ namespace FocusFlow.Controllers
             await _taskRepository.RemoveTask(userTaskFromDb);
 
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllTasks()
+        {
+            var currentUser = await _userManager.GetUserAsync(User);
+
+            IEnumerable<UserTask> tasks = _taskRepository.GetAllTasks(currentUser.Id, false);
+            IEnumerable<TaskDTO> tasksDTO = tasks.Select(u => new TaskDTO()
+            {
+                Name = u.Name,
+                Description = u.Description,
+                StartDate = u.CreatedAt.ToString("yyyy-MM-dd"),
+                EndDate = u.Deadline.ToString("yyyy-MM-dd")
+            });
+
+            string json = JsonConvert.SerializeObject(tasksDTO);
+
+            return Content(json, "application/json");
         }
     }
 }
