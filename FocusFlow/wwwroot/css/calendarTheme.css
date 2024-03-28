@@ -1,0 +1,18 @@
+﻿.fc-col-header-cell-cushion {
+    color: darkgrey;
+}
+
+.fc-daygrid-day-number {
+    color: darkgrey;
+}
+
+.fc {
+    border-color: black;
+}
+
+.full-calendar .fc-content .fc-event-container .fc-event {
+    background: darkgrey !important;
+    border-color: black !important;
+    color: darkgrey !important;
+    border-radius: 0;
+}
