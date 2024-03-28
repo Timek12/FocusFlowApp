@@ -10,4 +10,17 @@ document.addEventListener('DOMContentLoaded', function () {
         height: '700px',
     });
     calendar.render();
+
+    fetch('/Task/GetAllTasks')
+        .then(response => response.json())
+        .then(tasks => {
+            for (let task of tasks) {
+                calendar.addEvent({
+                    title: task.Name,
+                    start: task.StartDate,
+                    end: task.EndDate
+                });
+                console.log(task)
+            }
+        });
 });

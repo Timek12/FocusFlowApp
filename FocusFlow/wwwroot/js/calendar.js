@@ -8,5 +8,18 @@ document.addEventListener('DOMContentLoaded', function () {
         height: '700px',
     });
     calendar.render();
+    fetch('/Task/GetAllTasks')
+        .then(function (response) { return response.json(); })
+        .then(function (tasks) {
+        for (var _i = 0, tasks_1 = tasks; _i < tasks_1.length; _i++) {
+            var task = tasks_1[_i];
+            calendar.addEvent({
+                title: task.Name,
+                start: task.StartDate,
+                end: task.EndDate
+            });
+            console.log(task);
+        }
+    });
 });
 //# sourceMappingURL=calendar.js.map
