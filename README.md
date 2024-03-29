@@ -7,9 +7,16 @@ Task Management:
 - Users can easily add, edit, and delete tasks.
 - Tasks can be categorized, prioritized, and assigned due dates.
 - Users can mark tasks as completed and track their progress.
+- Admins can manage tasks of all users
 
 Pomodoro Timer:
 
 - A built-in Pomodoro timer allows users to work in focused intervals.
-- Customizable timer durations and break lengths cater to individual preferences.
-- The timer helps users maintain focus and manage their time effectively.
+- Timer lets users customize duration and break lengths.
+- All of the users' Pomodoro sessions are stored in database.
+
+Interactive Calendar:
+
+- Users have an interactive calendar where they can view all their tasks and schedule.
+
+
