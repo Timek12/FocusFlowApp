@@ -1,6 +1,10 @@
+using FocusFlow.DTOs;
 using FocusFlow.Models;
+using FocusFlow.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Diagnostics;
+using System.Net;
 
 namespace FocusFlow.Controllers
 {
@@ -13,9 +17,23 @@ namespace FocusFlow.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            HomeVM homeVM = new();
+
+            using HttpClient client = new();
+            try
+            {
+                string response = await client.GetStringAsync("https://zenquotes.io/api/quotes/");
+                var quoteList = JsonConvert.DeserializeObject<List<ZenQuoteDTO>>(response);
+                homeVM.Quotes = quoteList.Take(5);
+            }
+            catch (HttpRequestException ex)
+            {
+                return View();
+            }
+
+            return View(homeVM);
         }
 
         public IActionResult Privacy()
