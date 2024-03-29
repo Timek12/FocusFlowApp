@@ -6,10 +6,10 @@ let timer: number = duration;
 let display: HTMLElement = document.querySelector('#time');
 let startTimerButton: HTMLButtonElement = document.querySelector('#startTimerButton') as HTMLButtonElement;
 let timerInterval: number;
-let isPaused: boolean;
 let PomodoroMode: Mode = Mode.Pomodoro;
+let isPaused: boolean;
 
-export async function startTimer(duration: number, display: HTMLElement): Promise<void> {
+export async function startTimer(display: HTMLElement): Promise<void> {
     clearTimeout(timerInterval);
 
     if (timer === duration && PomodoroMode == Mode.Pomodoro) {
@@ -35,9 +35,10 @@ export async function startTimer(duration: number, display: HTMLElement): Promis
         if (!isPaused) {
             if (--timer < 0) {
                 if (PomodoroMode == Mode.Pomodoro) {
-                    await resetTimer();
                     finalizeSession();
                 }
+
+                await resetTimer();
                 startTimerButton.disabled = false;
             }
             else {
@@ -76,18 +77,6 @@ export function stopTimer(): Promise<void> {
 
 export async function resetTimer(): Promise<void> {
     await stopTimer();
-    switch (PomodoroMode) {
-        case Mode.Pomodoro:
-            timer = duration;
-            break;
-        case Mode.ShortBreak:
-            timer = Duration.ShortBreak;
-            break;
-        case Mode.LongBreak:
-            timer = Duration.LongBreak;
-            break;
-    }
-
     display.textContent = formatTime(timer);
 }
 
@@ -105,4 +94,12 @@ export function finalizeSession(): Promise<void> {
         .catch(error => {
             console.error("An error occurred:", error);
         });
+}
+
+export function setTimer(newTimer: number) {
+    timer = newTimer;
+}
+
+export function setIsPaused(newIsPaused: boolean) {
+    isPaused = newIsPaused;
 }

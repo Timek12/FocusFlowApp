@@ -34,16 +34,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import { Duration } from "./enums.js";
 import { formatTime, getDurationInSeconds } from "./utils.js";
 var duration = getDurationInSeconds();
 var timer = duration;
 var display = document.querySelector('#time');
 var startTimerButton = document.querySelector('#startTimerButton');
 var timerInterval;
-var isPaused;
 var PomodoroMode = 0 /* Mode.Pomodoro */;
-export function startTimer(duration, display) {
+var isPaused;
+export function startTimer(display) {
     return __awaiter(this, void 0, void 0, function () {
         var startTime, intervalFunc;
         var _this = this;
@@ -69,21 +68,20 @@ export function startTimer(duration, display) {
                     switch (_a.label) {
                         case 0:
                             display.textContent = formatTime(timer);
-                            if (!!isPaused) return [3 /*break*/, 4];
-                            if (!(--timer < 0)) return [3 /*break*/, 3];
-                            if (!(PomodoroMode == 0 /* Mode.Pomodoro */)) return [3 /*break*/, 2];
+                            if (!!isPaused) return [3 /*break*/, 3];
+                            if (!(--timer < 0)) return [3 /*break*/, 2];
+                            if (PomodoroMode == 0 /* Mode.Pomodoro */) {
+                                finalizeSession();
+                            }
                             return [4 /*yield*/, resetTimer()];
                         case 1:
                             _a.sent();
-                            finalizeSession();
-                            _a.label = 2;
-                        case 2:
                             startTimerButton.disabled = false;
-                            return [3 /*break*/, 4];
-                        case 3:
+                            return [3 /*break*/, 3];
+                        case 2:
                             timerInterval = setTimeout(intervalFunc, 1000);
-                            _a.label = 4;
-                        case 4: return [2 /*return*/];
+                            _a.label = 3;
+                        case 3: return [2 /*return*/];
                     }
                 });
             }); };
@@ -123,17 +121,6 @@ export function resetTimer() {
                 case 0: return [4 /*yield*/, stopTimer()];
                 case 1:
                     _a.sent();
-                    switch (PomodoroMode) {
-                        case 0 /* Mode.Pomodoro */:
-                            timer = duration;
-                            break;
-                        case 1 /* Mode.ShortBreak */:
-                            timer = Duration.ShortBreak;
-                            break;
-                        case 2 /* Mode.LongBreak */:
-                            timer = Duration.LongBreak;
-                            break;
-                    }
                     display.textContent = formatTime(timer);
                     return [2 /*return*/];
             }
@@ -152,5 +139,11 @@ export function finalizeSession() {
         .catch(function (error) {
         console.error("An error occurred:", error);
     });
+}
+export function setTimer(newTimer) {
+    timer = newTimer;
+}
+export function setIsPaused(newIsPaused) {
+    isPaused = newIsPaused;
 }
 //# sourceMappingURL=timer.js.map
