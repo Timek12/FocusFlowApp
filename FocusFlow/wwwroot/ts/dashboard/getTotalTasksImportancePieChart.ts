@@ -1,6 +1,8 @@
 ﻿declare var ApexCharts: any;
 
 export default function loadTotalTasksImportancePieChart() {
+    $(".chart-spinner").show();
+
     fetch("/Dashboard/GetTasksImportancePieChartData", {
         method: 'GET',
     })
@@ -8,20 +10,12 @@ export default function loadTotalTasksImportancePieChart() {
         .then(data => {
             var options = {
                 chart: {
+                    height: 325,
                     type: 'pie'
                 },
                 series: data.series,
                 labels: data.labels,
                 colors: ['#28a745', '#ffc107', '#dc3545'],
-                title: {
-                    text: 'Total Tasks Importance',
-                    align: 'center',
-                    style: {
-                        fontSize: '14px',
-                        fontWeight: 'bold',
-                        color: '#263238'
-                    },
-                },
                 legend: {
                     position: 'bottom',
                     horizontalAlign: 'center',
@@ -34,6 +28,7 @@ export default function loadTotalTasksImportancePieChart() {
 
             var chart = new ApexCharts(document.querySelector("#totalTasksImportancePieChart"), options);
             chart.render();
+            $(".chart-spinner").hide();
         })
         .catch(error => console.error('Error: ', error));
 }

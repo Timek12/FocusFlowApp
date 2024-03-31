@@ -1,4 +1,5 @@
 export default function loadSessionsLineChart() {
+    $(".chart-spinner").show();
     fetch("/Dashboard/GetSessionsLineChartData", {
         method: 'GET',
     })
@@ -7,7 +8,7 @@ export default function loadSessionsLineChart() {
         var options = {
             series: data.series,
             chart: {
-                height: 350,
+                height: 280,
                 type: 'line',
             },
             stroke: {
@@ -36,16 +37,20 @@ export default function loadSessionsLineChart() {
                 }
             },
             legend: {
+                position: 'bottom',
+                horizontalAlign: 'center',
                 labels: {
                     colors: "#fff",
+                    userSeriesColors: true
                 },
             },
             tooltip: {
                 theme: 'dark'
-            }
+            },
         };
         var chart = new ApexCharts(document.querySelector("#getSessionsLineChart"), options);
         chart.render();
+        $(".chart-spinner").hide();
     })
         .catch(function (error) { return console.error('Error: ', error); });
 }

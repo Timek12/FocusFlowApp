@@ -1,6 +1,8 @@
 ﻿declare var ApexCharts: any;
 
 export default function loadTasksLineChart() {
+    $(".chart-spinner").show();
+
     fetch("/Dashboard/GetTasksLineChartData", {
         method: 'GET',
     })
@@ -9,7 +11,7 @@ export default function loadTasksLineChart() {
             var options = {
                 series: data.series,
                 chart: {
-                    height: 350,
+                    height: 300,
                     type: 'line',
                 },
                 stroke: {
@@ -22,14 +24,6 @@ export default function loadTasksLineChart() {
                         size: 7
                     }
                 },
-                xaxis: {
-                    categories: data.categories,
-                    labels: {
-                        style: {
-                            colors: "#ddd",
-                        },
-                    }
-                },
                 yaxis: {
                     labels: {
                         style: {
@@ -37,18 +31,22 @@ export default function loadTasksLineChart() {
                         },
                     }
                 },
-                legend: {
-                    labels: {
-                        colors: "#fff",
-                    },
-                },
                 tooltip: {
                     theme: 'dark'
-                }
+                },
+                legend: {
+                    position: 'bottom',
+                    horizontalAlign: 'center',
+                    labels: {
+                        colors: "#fff",
+                        userSeriesColors: true
+                    },
+                },
             };
 
             var chart = new ApexCharts(document.querySelector("#getTasksLineChart"), options);
             chart.render();
+            $(".chart-spinner").hide();
         })
         .catch(error => console.error('Error: ', error));
 }
