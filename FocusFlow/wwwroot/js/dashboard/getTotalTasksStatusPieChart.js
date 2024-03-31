@@ -33,7 +33,7 @@ function loadTotalTasksStatusPieChartData() {
                 },
             },
         };
-        var chart = new ApexCharts(document.querySelector("#totalTasksPieChart"), options);
+        var chart = new ApexCharts(document.querySelector("#totalTasksStatusPieChart"), options);
         chart.render();
     })
         .catch(function (error) { return console.error('Error: ', error); });
