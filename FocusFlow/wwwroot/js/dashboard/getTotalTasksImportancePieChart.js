@@ -1,8 +1,4 @@
-var ApexCharts;
-$(function () {
-    loadTotalTasksImportancePieChart();
-});
-function loadTotalTasksImportancePieChart() {
+export default function loadTotalTasksImportancePieChart() {
     fetch("/Dashboard/GetTasksImportancePieChartData", {
         method: 'GET',
     })

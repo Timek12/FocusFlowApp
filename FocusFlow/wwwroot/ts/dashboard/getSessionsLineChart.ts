@@ -1,8 +1,6 @@
-﻿var ApexCharts;
-$(function () {
-    loadSessionsLineChart();
-});
-function loadSessionsLineChart() {
+﻿declare var ApexCharts: any;
+
+export default function loadSessionsLineChart() {
     fetch("/Dashboard/GetSessionsLineChartData", {
         method: 'GET',
     })

@@ -1,8 +1,4 @@
-var ApexCharts;
-$(function () {
-    loadTasksLineChart();
-});
-function loadTasksLineChart() {
+export default function loadTasksLineChart() {
     fetch("/Dashboard/GetTasksLineChartData", {
         method: 'GET',
     })

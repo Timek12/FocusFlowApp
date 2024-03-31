@@ -1,9 +1,6 @@
-﻿var ApexCharts: any;
-$(function () {
-    loadTotalTasksStatusPieChart();
-});
+﻿declare var ApexCharts: any;
 
-function loadTotalTasksStatusPieChart() {
+export default function loadTotalTasksStatusPieChart() {
     fetch("/Dashboard/GetTasksStatusPieChartData", {
         method: 'GET',
     })
