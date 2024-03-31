@@ -78,9 +78,9 @@ namespace FocusFlow.Controllers
             return pieChartDTO;
         }
 
-        private IQueryable<UserTask> FilterTasksByUserAndDate(IQueryable<UserTask> tasks, string userId, bool isAdmin) 
+        private IQueryable<UserTask> FilterTasksByUserAndDate(IQueryable<UserTask> tasks, string userId, bool isAdmin)
         {
-            if(!isAdmin)
+            if (!isAdmin)
             {
                 tasks = tasks.Where(u => u.UserId == userId);
             }
@@ -123,7 +123,7 @@ namespace FocusFlow.Controllers
             var mediumImportanceTaskCountSeries = allDates.Select(date => mediumImportanceTaskDataDict
                                                     .TryGetValue(date, out var count) ? count : 0).ToArray();
             var highImportanceTaskCountSeries = allDates.Select(date => highImportanceTaskDataDict
-                                                    .TryGetValue(date, out var count) ? count: 0).ToArray();
+                                                    .TryGetValue(date, out var count) ? count : 0).ToArray();
 
             LineChartDTO lineChartDTO = new()
             {
@@ -138,5 +138,31 @@ namespace FocusFlow.Controllers
 
             return lineChartDTO;
         }
-    } 
+
+        public async Task<LineChartDTO> GetSessionsLineChartData()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            bool isAdmin = await _userManager.IsInRoleAsync(user, SD.Role_Admin);
+
+            var sessionsChartData = _db.PomodoroSessions.Where(u => u.isCompleted &&
+                u.StartTime >= DateTime.Now.AddDays(-30) && u.StartTime <= DateTime.Now)
+                .GroupBy(u => u.StartTime.Date)
+                .Select(u => new
+                {
+                    DateTime = u.Key,
+                    Count = u.Count()
+                });
+
+            var sessionChartDataSeries = sessionsChartData.Select(u => u.Count).ToArray();
+            var sessionChartDataDates = sessionsChartData.Select(u => u.DateTime.ToString("dd/MM")).ToArray();
+
+            LineChartDTO lineChartDTO = new()
+            {
+                Series = [new() { Name = "Sessions", Data = sessionChartDataSeries }],
+                Categories = sessionChartDataDates
+            };
+
+            return lineChartDTO;
+        }
+    }
 }
