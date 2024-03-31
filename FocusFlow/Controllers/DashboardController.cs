@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System.Globalization;
 using System.Threading.Tasks;
 
 namespace FocusFlow.Controllers
@@ -76,5 +77,66 @@ namespace FocusFlow.Controllers
 
             return pieChartDTO;
         }
-    }
+
+        private IQueryable<UserTask> FilterTasksByUserAndDate(IQueryable<UserTask> tasks, string userId, bool isAdmin) 
+        {
+            if(!isAdmin)
+            {
+                tasks = tasks.Where(u => u.UserId == userId);
+            }
+
+            return tasks.Where(u => u.CreatedAt >= DateTime.Now.AddDays(-30) && u.CreatedAt <= DateTime.Now);
+        }
+
+        private Dictionary<string, int> GetTaskDataDict(IQueryable<UserTask> tasks)
+        {
+            return tasks.GroupBy(u => u.CreatedAt.Date)
+                .Select(u => new
+                {
+                    DateTime = u.Key,
+                    TaskCount = u.Count()
+                })
+                .ToDictionary(u => u.DateTime.ToString("dd/MM"), u => u.TaskCount);
+        }
+
+        public async Task<LineChartDTO> GetTasksLineChartData()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            bool isAdmin = await _userManager.IsInRoleAsync(user, SD.Role_Admin);
+
+            var tasks = _db.Tasks.AsQueryable();
+            tasks = FilterTasksByUserAndDate(tasks, user.Id, isAdmin);
+
+            var lowImportanceTaskDataDict = GetTaskDataDict(tasks.Where(u => u.Importance == SD.TaskImportance.Low));
+            var mediumImportanceTaskDataDict = GetTaskDataDict(tasks.Where(u => u.Importance == SD.TaskImportance.Medium));
+            var highImportanceTaskDataDict = GetTaskDataDict(tasks.Where(u => u.Importance == SD.TaskImportance.High));
+
+            var allDates = lowImportanceTaskDataDict.Keys
+                .Concat(mediumImportanceTaskDataDict.Keys)
+                .Concat(highImportanceTaskDataDict.Keys)
+                .Distinct()
+                .OrderBy(date => date)
+                .ToArray();
+
+            var lowImportanceTaskCountSeries = allDates.Select(date => lowImportanceTaskDataDict
+                                                    .TryGetValue(date, out var count) ? count : 0).ToArray();
+            var mediumImportanceTaskCountSeries = allDates.Select(date => mediumImportanceTaskDataDict
+                                                    .TryGetValue(date, out var count) ? count : 0).ToArray();
+            var highImportanceTaskCountSeries = allDates.Select(date => highImportanceTaskDataDict
+                                                    .TryGetValue(date, out var count) ? count: 0).ToArray();
+
+            LineChartDTO lineChartDTO = new()
+            {
+                Series =
+                [
+                    new() { Name = "Low Importance", Data = lowImportanceTaskCountSeries },
+                    new() { Name = "Medium Importance", Data = mediumImportanceTaskCountSeries },
+                    new() { Name = "High Importance", Data = highImportanceTaskCountSeries }
+                ],
+                Categories = allDates
+            };
+
+            return lineChartDTO;
+        }
+    } 
 }
