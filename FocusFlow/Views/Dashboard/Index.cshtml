@@ -1,34 +1,42 @@
 ﻿<div>
     <div class="row">
-
-    <div class="col-md-3 col-xl-4 mt-2">
-        <div class="card">
-            <div class="card-body">
-                    <div id="totalTasksStatusPieChart"></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-3 col-xl-4 mt-2">
-        <div class="card">
-            <div class="card-body">
-                <div id="totalTasksImportancePieChart"></div>
-            </div>
-        </div>
-    </div>
-
-     <div class="col-md-6 col-xl-4 mt-2">
+        <div class="col-md-6 col-xl-4 mt-2">
             <div class="card">
                 <div class="card-body">
-                    <div id="getTasksLineChart"></div>
+                    <div id="totalTasksStatusPieChart"></div>
                 </div>
             </div>
-     </div> 
-</div>
+        </div>
+
+        <div class="col-md-6 col-xl-4 mt-2">
+            <div class="card">
+                <div class="card-body">
+                    <div id="totalTasksImportancePieChart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-4 mt-2">
+        <div class="card">
+            <div class="card-body">
+                <div id="getTasksLineChart"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-4 mt-2">
+        <div class="card">
+            <div class="card-body">
+                <div id="getSessionsLineChart"></div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts {
     <script src="~/js/dashboard/getTotalTasksStatusPieChart.js"></script>
     <script src="~/js/dashboard/getTotalTasksImportancePieChart.js"></script>
     <script src="~/js/dashboard/getTasksLineChart.js"></script>
+    <script src="~/js/dashboard/getSessionsLineChart.js"></script>
 }
