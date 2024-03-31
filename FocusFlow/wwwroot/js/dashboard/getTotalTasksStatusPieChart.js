@@ -1,9 +1,9 @@
 var ApexCharts;
 $(function () {
-    loadTotalTasksPieChartData();
+    loadTotalTasksStatusPieChartData();
 });
-function loadTotalTasksPieChartData() {
-    fetch("/Dashboard/GetTasksPieChartData", {
+function loadTotalTasksStatusPieChartData() {
+    fetch("/Dashboard/GetTasksStatusPieChartData", {
         method: 'GET',
     })
         .then(function (response) { return response.json(); })
@@ -38,4 +38,4 @@ function loadTotalTasksPieChartData() {
     })
         .catch(function (error) { return console.error('Error: ', error); });
 }
-//# sourceMappingURL=getTotalTasksPieChart.js.map
+//# sourceMappingURL=getTotalTasksStatusPieChart.js.map

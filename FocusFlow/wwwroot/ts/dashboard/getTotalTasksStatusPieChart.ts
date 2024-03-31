@@ -1,10 +1,10 @@
 ﻿var ApexCharts: any;
 $(function () {
-    loadTotalTasksPieChartData();
+    loadTotalTasksStatusPieChartData();
 });
 
-function loadTotalTasksPieChartData() {
-    fetch("/Dashboard/GetTasksPieChartData", {
+function loadTotalTasksStatusPieChartData() {
+    fetch("/Dashboard/GetTasksStatusPieChartData", {
         method: 'GET',
     })
         .then(response => response.json())
