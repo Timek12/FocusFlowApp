@@ -27,7 +27,7 @@ namespace FocusFlow.Controllers
             return View();
         }
 
-        public async Task<PieChartDTO> GetTasksPieChartData()
+        public async Task<PieChartDTO> GetTasksStatusPieChartData()
         {
             var user = await _userManager.GetUserAsync(User);
             bool isAdmin = await _userManager.IsInRoleAsync(user, SD.Role_Admin);
@@ -45,8 +45,33 @@ namespace FocusFlow.Controllers
 
             PieChartDTO pieChartDTO = new()
             {
-                Labels = new string[] { "Tasks completed", "Tasks in progress" },
+                Labels = new string[] { "Completed", "In progress" },
                 Series = new int[] { completedTasks, incompletedTasks }
+            };
+
+            return pieChartDTO;
+        }
+
+        public async Task<PieChartDTO> GetTasksImportancePieChartData()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            bool isAdmin = await _userManager.IsInRoleAsync(user, SD.Role_Admin);
+
+            var tasks = _db.Tasks.AsQueryable();
+
+            if (!isAdmin)
+            {
+                tasks = tasks.Where(u => u.UserId == user.Id);
+            }
+
+            var lowImportanceTasksCount = tasks.Count(u => u.Importance == SD.TaskImportance.Low);
+            var mediumImportanceTasksCount = tasks.Count(u => u.Importance == SD.TaskImportance.Medium);
+            var highImportanceTasksCount = tasks.Count(u => u.Importance == SD.TaskImportance.High);
+
+            PieChartDTO pieChartDTO = new()
+            {
+                Labels = new string[] { "Low", "Medium", "High" },
+                Series = new int[] { lowImportanceTasksCount, mediumImportanceTasksCount, highImportanceTasksCount }
             };
 
             return pieChartDTO;
