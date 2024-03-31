@@ -1,4 +1,4 @@
-﻿import { Mode, Duration } from "./enums.js";
+﻿import { Mode } from "./enums.js";
 import { formatTime, getDurationInSeconds } from "./utils.js";
 
 let duration: number = getDurationInSeconds();
@@ -79,8 +79,6 @@ export async function resetTimer(): Promise<void> {
     await stopTimer();
     display.textContent = formatTime(timer);
 }
-
-
 
 export function finalizeSession(): Promise<void> {
     return fetch('/Pomodoro/FinalizeSession', {
