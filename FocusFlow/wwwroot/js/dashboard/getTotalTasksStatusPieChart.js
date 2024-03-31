@@ -1,8 +1,8 @@
 var ApexCharts;
 $(function () {
-    loadTotalTasksStatusPieChartData();
+    loadTotalTasksStatusPieChart();
 });
-function loadTotalTasksStatusPieChartData() {
+function loadTotalTasksStatusPieChart() {
     fetch("/Dashboard/GetTasksStatusPieChartData", {
         method: 'GET',
     })
@@ -16,7 +16,7 @@ function loadTotalTasksStatusPieChartData() {
             labels: data.labels,
             colors: ['#32CD32', '#B0E0E6'],
             title: {
-                text: 'Total Tasks',
+                text: 'Total Tasks Status',
                 align: 'center',
                 style: {
                     fontSize: '14px',
