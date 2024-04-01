@@ -1,7 +1,7 @@
 using FocusFlow.Data;
 using FocusFlow.Models;
 using FocusFlow.Repository;
-using FocusFlow.Services.Interface;
+using FocusFlow.Repository.IRepository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

@@ -1,6 +1,7 @@
 ﻿using FocusFlow.Data;
 using FocusFlow.DTOs;
 using FocusFlow.Models;
+using FocusFlow.Repository.IRepository;
 using FocusFlow.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -14,12 +15,14 @@ namespace FocusFlow.Controllers
     [Authorize]
     public class DashboardController : Controller
     {
-        private readonly ApplicationDbContext _db;
+        private readonly ITaskRepository _taskRepository;
+        private readonly IPomodoroRepository _pomodoroRepository;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public DashboardController(ApplicationDbContext db, UserManager<ApplicationUser> userManager)
+        public DashboardController(ITaskRepository taskRepository, IPomodoroRepository pomodoroRepository, UserManager<ApplicationUser> userManager)
         {
-            _db = db;
+            _taskRepository = taskRepository;
+            _pomodoroRepository = pomodoroRepository;
             _userManager = userManager;
         }
 
@@ -33,7 +36,7 @@ namespace FocusFlow.Controllers
             var user = await _userManager.GetUserAsync(User);
             bool isAdmin = await _userManager.IsInRoleAsync(user, SD.Role_Admin);
 
-            var tasks = _db.Tasks.AsQueryable();
+            var tasks = _taskRepository.GetUserTasksQuery();
 
             if (!isAdmin)
             {
@@ -58,7 +61,7 @@ namespace FocusFlow.Controllers
             var user = await _userManager.GetUserAsync(User);
             bool isAdmin = await _userManager.IsInRoleAsync(user, SD.Role_Admin);
 
-            var tasks = _db.Tasks.AsQueryable();
+            var tasks = _taskRepository.GetUserTasksQuery();
 
             if (!isAdmin)
             {
@@ -104,7 +107,7 @@ namespace FocusFlow.Controllers
             var user = await _userManager.GetUserAsync(User);
             bool isAdmin = await _userManager.IsInRoleAsync(user, SD.Role_Admin);
 
-            var tasks = _db.Tasks.AsQueryable();
+            var tasks = _taskRepository.GetUserTasksQuery();
             tasks = FilterTasksByUserAndDate(tasks, user.Id, isAdmin);
 
             var lowImportanceTaskDataDict = GetTaskDataDict(tasks.Where(u => u.Importance == SD.TaskImportance.Low));
@@ -144,7 +147,7 @@ namespace FocusFlow.Controllers
             var user = await _userManager.GetUserAsync(User);
             bool isAdmin = await _userManager.IsInRoleAsync(user, SD.Role_Admin);
 
-            var sessionsChartData = _db.PomodoroSessions.Where(u => u.isCompleted &&
+            var sessionsChartData = _pomodoroRepository.GetAll(u => u.isCompleted &&
                 u.StartTime >= DateTime.Now.AddDays(-30) && u.StartTime <= DateTime.Now)
                 .GroupBy(u => u.StartTime.Date)
                 .Select(u => new
