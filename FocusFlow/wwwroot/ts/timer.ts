@@ -38,6 +38,7 @@ export async function startTimer(display: HTMLElement): Promise<void> {
                     finalizeSession();
                 }
 
+                timer = 0;
                 await resetTimer();
                 startTimerButton.disabled = false;
             }

@@ -73,6 +73,7 @@ export function startTimer(display) {
                             if (PomodoroMode == 0 /* Mode.Pomodoro */) {
                                 finalizeSession();
                             }
+                            timer = 0;
                             return [4 /*yield*/, resetTimer()];
                         case 1:
                             _a.sent();
