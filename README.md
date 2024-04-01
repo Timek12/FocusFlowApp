@@ -1,4 +1,4 @@
-FocusFlow is a web application built in ASP.NET Core MVC using C#, TypeScript and SQL Server and various JavaScript  libraries and APIs such as ApexCharts.js , FullCalendar, Zen Quotes API. Designed to help users organize their work, track tasks, manage their workflow, and ultimately enhance productivity. The application offers a range of functionalities aimed at optimizing time management and task prioritization.
+FocusFlow is a web application built in ASP.NET Core MVC using C#, TypeScript and T-SQL and various JavaScript  libraries and APIs such as ApexCharts.js , FullCalendar, Zen Quotes API. Designed to help users organize their work, track tasks, manage their workflow, and ultimately enhance productivity. The application offers a range of functionalities aimed at optimizing time management and task prioritization.
 
 The app is still being developed, but here are its main features for now:
 
