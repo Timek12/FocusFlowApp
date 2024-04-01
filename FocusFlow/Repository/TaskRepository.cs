@@ -1,6 +1,6 @@
 ﻿using FocusFlow.Data;
 using FocusFlow.Models;
-using FocusFlow.Services.Interface;
+using FocusFlow.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 
 namespace FocusFlow.Repository

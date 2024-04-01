@@ -1,6 +1,6 @@
 ﻿using FocusFlow.Models;
 
-namespace FocusFlow.Services.Interface
+namespace FocusFlow.Repository.Interface
 {
     public interface IPomodoroRepository
     {
