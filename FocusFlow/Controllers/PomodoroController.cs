@@ -75,7 +75,7 @@ namespace FocusFlow.Controllers
             PomodoroSession.isCompleted = true;
             _pomodoroRepository.UpdateSession(PomodoroSession);
 
-            return RedirectToAction(nameof(Index));
+            return Json(new { success = true });
         }
     }
 }
