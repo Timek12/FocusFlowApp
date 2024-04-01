@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     start: task.StartDate,
                     end: task.EndDate
                 });
-                console.log(task)
             }
         });
 });

@@ -34,8 +34,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import { Duration } from "./enums.js";
-import { formatTime, getDurationInSeconds } from "./utils.js";
+import { Duration } from "../enums.js";
+import { formatTime, getDurationInSeconds } from "../utils.js";
 var duration = getDurationInSeconds();
 var timer = duration;
 var display = document.querySelector('#time');

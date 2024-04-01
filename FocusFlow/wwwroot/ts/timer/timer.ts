@@ -1,5 +1,5 @@
-﻿import { Mode, Duration } from "./enums.js";
-import { formatTime, getDurationInSeconds } from "./utils.js";
+﻿import { Mode, Duration } from "../enums.js";
+import { formatTime, getDurationInSeconds } from "../utils.js";
 
 let duration: number = getDurationInSeconds();
 let timer: number = duration;
