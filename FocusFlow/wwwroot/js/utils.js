@@ -1,3 +1,4 @@
+import { Duration } from './enums.js';
 export function formatTime(timeInSeconds) {
     var hours = Math.floor(timeInSeconds / 3600);
     var minutes = Math.floor(timeInSeconds / 60);
@@ -17,5 +18,20 @@ export function getDurationInSeconds() {
     var durationParts = durationString.split(':');
     var duration = (+durationParts[0]) * 60 * 60 + (+durationParts[1]) * 60 + (+durationParts[2]);
     return duration;
+}
+export function getCurrentDurationInSeconds(pomodoroMode) {
+    var newTimer;
+    switch (pomodoroMode) {
+        case 0 /* Mode.Pomodoro */:
+            newTimer = getDurationInSeconds();
+            break;
+        case 1 /* Mode.ShortBreak */:
+            newTimer = Duration.ShortBreak;
+            break;
+        case 2 /* Mode.LongBreak */:
+            newTimer = Duration.LongBreak;
+            break;
+    }
+    return newTimer;
 }
 //# sourceMappingURL=utils.js.map

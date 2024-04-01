@@ -1,6 +1,6 @@
 import { Duration } from "../enums.js";
 import { startTimer, stopTimer, resetTimer, setTimer, setIsPaused } from "./timer.js";
-import { formatTime, getDurationInSeconds } from "../utils.js";
+import { formatTime, getDurationInSeconds, getCurrentDurationInSeconds } from "../utils.js";
 var pomodoroTimer = getDurationInSeconds();
 var shortBreakTimer = Duration.ShortBreak;
 var longBreakTimer = Duration.LongBreak;
@@ -24,17 +24,7 @@ stopTimerButton.addEventListener('click', function () {
     startTimerButton.disabled = false;
 });
 resetTimerButton.addEventListener('click', function () {
-    switch (pomodoroMode) {
-        case 0 /* Mode.Pomodoro */:
-            timer = pomodoroTimer;
-            break;
-        case 1 /* Mode.ShortBreak */:
-            timer = shortBreakTimer;
-            break;
-        case 2 /* Mode.LongBreak */:
-            timer = longBreakTimer;
-            break;
-    }
+    timer = getCurrentDurationInSeconds(pomodoroMode);
     resetTimer(timer);
     startTimerButton.disabled = false;
 });

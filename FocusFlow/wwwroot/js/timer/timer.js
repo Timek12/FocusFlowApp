@@ -34,8 +34,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import { Duration } from "../enums.js";
-import { formatTime, getDurationInSeconds } from "../utils.js";
+import { formatTime, getCurrentDurationInSeconds, getDurationInSeconds } from "../utils.js";
 var duration = getDurationInSeconds();
 var timer = duration;
 var display = document.querySelector('#time');
@@ -72,18 +71,7 @@ export function startTimer(display) {
                             display.textContent = formatTime(timer);
                             if (!!isPaused) return [3 /*break*/, 3];
                             if (!(--timer < 0)) return [3 /*break*/, 2];
-                            newTimer = void 0;
-                            switch (pomodoroMode) {
-                                case 0 /* Mode.Pomodoro */:
-                                    newTimer = duration;
-                                    break;
-                                case 1 /* Mode.ShortBreak */:
-                                    newTimer = Duration.ShortBreak;
-                                    break;
-                                case 2 /* Mode.LongBreak */:
-                                    newTimer = Duration.LongBreak;
-                                    break;
-                            }
+                            newTimer = getCurrentDurationInSeconds(pomodoroMode);
                             return [4 /*yield*/, resetTimer(newTimer)];
                         case 1:
                             _a.sent();

@@ -1,5 +1,5 @@
-﻿import { Mode, Duration } from "../enums.js";
-import { formatTime, getDurationInSeconds } from "../utils.js";
+﻿import { Mode } from "../enums.js";
+import { formatTime, getCurrentDurationInSeconds, getDurationInSeconds } from "../utils.js";
 
 let duration: number = getDurationInSeconds();
 let timer: number = duration;
@@ -34,18 +34,7 @@ export async function startTimer(display: HTMLElement): Promise<void> {
 
         if (!isPaused) {
             if (--timer < 0) {
-                let newTimer;
-                switch (pomodoroMode) {
-                    case Mode.Pomodoro:
-                        newTimer = duration;
-                        break;
-                    case Mode.ShortBreak:
-                        newTimer = Duration.ShortBreak;
-                        break;
-                    case Mode.LongBreak:
-                        newTimer = Duration.LongBreak;
-                        break;
-                }
+                let newTimer = getCurrentDurationInSeconds(pomodoroMode);
 
                 await resetTimer(newTimer);
 
