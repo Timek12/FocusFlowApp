@@ -26,7 +26,7 @@ namespace FocusFlow.Services.Implementation
 
         public UserTask? GetTaskById(int taskId)
         {
-            return _unitOfWork.Task.Get(u => u.TaskId == taskId);
+            return _unitOfWork.Task.Get(u => u.TaskId == taskId, tracked: true);
         }
 
         public IQueryable<UserTask> GetUserTasksQuery()

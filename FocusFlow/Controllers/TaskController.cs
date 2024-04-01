@@ -7,19 +7,19 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using FocusFlow.DTOs;
 using Newtonsoft.Json;
-using FocusFlow.Repository.IRepository;
+using FocusFlow.Services.Interface;
 
 namespace FocusFlow.Controllers
 {
     [Authorize]
     public class TaskController : Controller
     {
-        private readonly ITaskRepository _taskRepository;
+        private readonly ITaskService _taskService;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public TaskController(ITaskRepository taskRepository, UserManager<ApplicationUser> userManager)
+        public TaskController(ITaskService taskService, UserManager<ApplicationUser> userManager)
         {
-            _taskRepository = taskRepository;
+            _taskService = taskService;
             _userManager = userManager;
         }
 
@@ -29,7 +29,7 @@ namespace FocusFlow.Controllers
 
             bool isAdmin = await _userManager.IsInRoleAsync(currentUser, Role_Admin);
 
-            IEnumerable<UserTask> tasks = _taskRepository.GetAllTasks(currentUser.Id, isAdmin);
+            IEnumerable<UserTask> tasks = _taskService.GetAllTasks(currentUser.Id, isAdmin);
 
             return View(tasks);
         }
@@ -56,7 +56,7 @@ namespace FocusFlow.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(UserTaskCreateVM userTaskVM)
+        public IActionResult Create(UserTaskCreateVM userTaskVM)
         {
             if (ModelState.IsValid)
             {
@@ -71,7 +71,7 @@ namespace FocusFlow.Controllers
                     UserId = _userManager.GetUserId(User)
                 };
 
-                await _taskRepository.AddTask(userTask);
+                _taskService.AddTask(userTask);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -93,7 +93,7 @@ namespace FocusFlow.Controllers
             return View(userTaskVM);
         }
 
-        public async Task<IActionResult> Update(int id)
+        public IActionResult Update(int id)
         {
             if (id < 1)
             {
@@ -102,7 +102,7 @@ namespace FocusFlow.Controllers
 
             UserTaskUpdateVM userTaskUpdateVM = new()
             {
-                UserTask = await _taskRepository.GetTaskById(id),
+                UserTask = _taskService.GetTaskById(id),
                 
                 StatusList = Enum.GetValues(typeof(Utility.SD.TaskStatus))
                 .Cast<Utility.SD.TaskStatus>().Select(e => new SelectListItem
@@ -130,7 +130,7 @@ namespace FocusFlow.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(UserTaskUpdateVM userTaskUpdateVM)
+        public IActionResult Update(UserTaskUpdateVM userTaskUpdateVM)
         {
             if (userTaskUpdateVM is null || userTaskUpdateVM.UserTask is null)
             {
@@ -139,7 +139,7 @@ namespace FocusFlow.Controllers
 
             if (ModelState.IsValid)
             {
-                await _taskRepository.UpdateTask(userTaskUpdateVM.UserTask);
+                _taskService.UpdateTask(userTaskUpdateVM.UserTask);
                 return RedirectToAction(nameof(Index));
             }
 
@@ -162,7 +162,7 @@ namespace FocusFlow.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(int id)
+        public IActionResult Delete(int id)
         {
             if (id < 1)
             {
@@ -170,23 +170,22 @@ namespace FocusFlow.Controllers
             }
 
 
-            var userTaskFromDb = await _taskRepository.GetTaskById(id);
+            var userTaskFromDb = _taskService.GetTaskById(id);
             if (userTaskFromDb == null)
             {
                 return RedirectToAction("Error", "Home");
             }
 
-            await _taskRepository.RemoveTask(userTaskFromDb);
+            _taskService.RemoveTask(userTaskFromDb);
 
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpGet]
         public async Task<IActionResult> GetAllTasks()
         {
             var currentUser = await _userManager.GetUserAsync(User);
 
-            IEnumerable<UserTask> tasks = _taskRepository.GetAllTasks(currentUser.Id, false);
+            IEnumerable<UserTask> tasks = _taskService.GetAllTasks(currentUser.Id, false);
             IEnumerable<TaskDTO> tasksDTO = tasks.Select(u => new TaskDTO()
             {
                 Name = u.Name,
