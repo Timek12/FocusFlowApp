@@ -1,11 +1,13 @@
 ﻿using FocusFlow.Models;
+using System.Linq.Expressions;
 
-namespace FocusFlow.Repository.Interface
+namespace FocusFlow.Repository.IRepository
 {
     public interface IPomodoroRepository
     {
-        public PomodoroSession? CreateSession(string userId);
-        public PomodoroSession? GetLatestSession(string userId);
-        public void UpdateSession(PomodoroSession session);
+        IEnumerable<PomodoroSession> GetAll(Expression<Func<PomodoroSession, bool>>? filter = null, bool tracked = false);
+        PomodoroSession? CreateSession(string userId);
+        PomodoroSession? GetLatestSession(string userId);
+        void UpdateSession(PomodoroSession session);
     }
 }

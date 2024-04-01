@@ -1,6 +1,8 @@
 ﻿using FocusFlow.Data;
 using FocusFlow.Models;
-using FocusFlow.Repository.Interface;
+using FocusFlow.Repository.IRepository;
+using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace FocusFlow.Repository
 {
@@ -45,6 +47,20 @@ namespace FocusFlow.Repository
         {
             return _db.PomodoroSessions.Where(u => u.UserId == userId && u.isCompleted == false)
                     .OrderBy(u => u.SessionId).FirstOrDefault();
+        }
+
+        public IEnumerable<PomodoroSession> GetAll(Expression<Func<PomodoroSession, bool>>? filter = null, bool tracked = false)
+        {
+            var query = _db.PomodoroSessions.AsQueryable();
+
+            if (!tracked)
+            {
+                query = query.AsNoTracking();
+            }
+
+            query = query.Where(filter);
+
+            return query.ToList();
         }
     }
 }

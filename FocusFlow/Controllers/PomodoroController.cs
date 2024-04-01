@@ -1,5 +1,5 @@
 ﻿using FocusFlow.Models;
-using FocusFlow.Services.Interface;
+using FocusFlow.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
