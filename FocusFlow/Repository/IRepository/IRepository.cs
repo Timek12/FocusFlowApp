@@ -6,6 +6,7 @@ namespace FocusFlow.Repository.IRepository
     {
         IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, bool tracked = false);
         T? Get(Expression<Func<T, bool>> filter, bool tracked = false);
+        IQueryable<T> GetQuery();
         void Add(T item);
         void Remove(T item);
     }

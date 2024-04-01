@@ -52,5 +52,10 @@ namespace FocusFlow.Repository
 
             return query.ToList();
         }
+
+        public IQueryable<T> GetQuery()
+        {
+            return dbSet.AsQueryable();
+        }
     }
 }
