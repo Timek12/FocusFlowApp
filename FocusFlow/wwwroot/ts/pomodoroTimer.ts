@@ -41,8 +41,7 @@ resetTimerButton.addEventListener('click', function () {
 
     }
 
-    setTimer(timer);
-    resetTimer();
+    resetTimer(timer);
     startTimerButton.disabled = false;
 });
 

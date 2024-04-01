@@ -1,4 +1,4 @@
-﻿import { Mode } from "./enums.js";
+﻿import { Mode, Duration } from "./enums.js";
 import { formatTime, getDurationInSeconds } from "./utils.js";
 
 let duration: number = getDurationInSeconds();
@@ -6,13 +6,13 @@ let timer: number = duration;
 let display: HTMLElement = document.querySelector('#time');
 let startTimerButton: HTMLButtonElement = document.querySelector('#startTimerButton') as HTMLButtonElement;
 let timerInterval: number;
-let PomodoroMode: Mode = Mode.Pomodoro;
+let pomodoroMode: Mode = Mode.Pomodoro;
 let isPaused: boolean;
 
 export async function startTimer(display: HTMLElement): Promise<void> {
     clearTimeout(timerInterval);
 
-    if (timer === duration && PomodoroMode == Mode.Pomodoro) {
+    if (timer === duration && pomodoroMode == Mode.Pomodoro) {
         let startTime = new Date();
 
         fetch('/Pomodoro/StartTimer', {
@@ -34,12 +34,25 @@ export async function startTimer(display: HTMLElement): Promise<void> {
 
         if (!isPaused) {
             if (--timer < 0) {
-                if (PomodoroMode == Mode.Pomodoro) {
+                let newTimer;
+                switch (pomodoroMode) {
+                    case Mode.Pomodoro:
+                        newTimer = duration;
+                        break;
+                    case Mode.ShortBreak:
+                        newTimer = Duration.ShortBreak;
+                        break;
+                    case Mode.LongBreak:
+                        newTimer = Duration.LongBreak;
+                        break;
+                }
+
+                await resetTimer(newTimer);
+
+                if (pomodoroMode == Mode.Pomodoro) {
                     finalizeSession();
                 }
 
-                timer = 0;
-                await resetTimer();
                 startTimerButton.disabled = false;
             }
             else {
@@ -51,8 +64,8 @@ export async function startTimer(display: HTMLElement): Promise<void> {
     timerInterval = setTimeout(intervalFunc, 1000);
 };
 
-export function stopTimer(): Promise<void> {
-    if (PomodoroMode == Mode.Pomodoro) {
+export async function stopTimer(): Promise<void> {
+    if (pomodoroMode == Mode.Pomodoro) {
         let stopTime = new Date();
 
         return fetch('/Pomodoro/StopTimer', {
@@ -76,8 +89,9 @@ export function stopTimer(): Promise<void> {
     }
 }
 
-export async function resetTimer(): Promise<void> {
+export async function resetTimer(newTimer: number): Promise<void> {
     await stopTimer();
+    timer = newTimer;
     display.textContent = formatTime(timer);
 }
 

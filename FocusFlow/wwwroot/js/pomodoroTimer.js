@@ -35,8 +35,7 @@ resetTimerButton.addEventListener('click', function () {
             timer = longBreakTimer;
             break;
     }
-    setTimer(timer);
-    resetTimer();
+    resetTimer(timer);
     startTimerButton.disabled = false;
 });
 pomodoroButton.addEventListener('click', function () {
