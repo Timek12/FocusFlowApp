@@ -3,11 +3,10 @@ using System.Linq.Expressions;
 
 namespace FocusFlow.Repository.IRepository
 {
-    public interface IPomodoroRepository
+    public interface IPomodoroRepository : IRepository<PomodoroSession>
     {
-        IEnumerable<PomodoroSession> GetAll(Expression<Func<PomodoroSession, bool>>? filter = null, bool tracked = false);
-        PomodoroSession? CreateSession(string userId);
+        PomodoroSession? CreateSession(string userId, TimeSpan duration);
         PomodoroSession? GetLatestSession(string userId);
-        void UpdateSession(PomodoroSession session);
+        void Update(PomodoroSession session);
     }
 }
