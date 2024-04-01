@@ -24,6 +24,7 @@ namespace FocusFlow.Services.Implementation
                 };
 
                 _unitOfWork.Pomodoro.Add(session);
+                _unitOfWork.Save();
 
                 return session;
             }
@@ -36,6 +37,7 @@ namespace FocusFlow.Services.Implementation
             if (!string.IsNullOrEmpty(session.UserId))
             {
                 _unitOfWork.Pomodoro.Update(session);
+                _unitOfWork.Save();
             }
         }
 
@@ -52,6 +54,12 @@ namespace FocusFlow.Services.Implementation
             }
 
             return null;
+        }
+
+        public void UpdateSession(PomodoroSession session)
+        {
+            _unitOfWork.Pomodoro.Update(session);
+            _unitOfWork.Save();
         }
     }
 }
