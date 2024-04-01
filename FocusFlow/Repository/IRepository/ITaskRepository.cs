@@ -4,6 +4,6 @@ namespace FocusFlow.Repository.IRepository
 {
     public interface ITaskRepository : IRepository<UserTask>
     {
-        Task Update(UserTask task);
+        void Update(UserTask task);
     }
 }

@@ -12,10 +12,9 @@ namespace FocusFlow.Repository
             _db = db;
         }
 
-        public async Task Update(UserTask task)
+        public void Update(UserTask task)
         {
             _db.Tasks.Update(task);
-            await _db.SaveChangesAsync();
         }
     }
 }
