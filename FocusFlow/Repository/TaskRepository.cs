@@ -1,6 +1,6 @@
 ﻿using FocusFlow.Data;
 using FocusFlow.Models;
-using FocusFlow.Repository.Interface;
+using FocusFlow.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 
 namespace FocusFlow.Repository
@@ -27,6 +27,11 @@ namespace FocusFlow.Repository
         public async Task<UserTask> GetTaskById(int taskId)
         {
             return await _db.Tasks.FirstOrDefaultAsync(u => u.TaskId == taskId);
+        }
+
+        public IQueryable<UserTask> GetUserTasksQuery()
+        {
+            return _db.Tasks.AsQueryable();
         }
 
         public async Task RemoveTask(UserTask task)

@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using static FocusFlow.Utility.SD;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using FocusFlow.Services.Interface;
 using FocusFlow.DTOs;
 using Newtonsoft.Json;
+using FocusFlow.Repository.IRepository;
 
 namespace FocusFlow.Controllers
 {
