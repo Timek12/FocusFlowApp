@@ -11,7 +11,7 @@ export default function loadSessionsLineChart() {
             var options = {
                 series: data.series,
                 chart: {
-                    height: 280,
+                    height: 265,
                     type: 'line',
                 },
                 stroke: {

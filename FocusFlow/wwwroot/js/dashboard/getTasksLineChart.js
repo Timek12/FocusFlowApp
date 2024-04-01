@@ -8,7 +8,7 @@ export default function loadTasksLineChart() {
         var options = {
             series: data.series,
             chart: {
-                height: 300,
+                height: 270,
                 type: 'line',
             },
             stroke: {
@@ -19,6 +19,14 @@ export default function loadTasksLineChart() {
                 strokeWidth: 0,
                 hover: {
                     size: 7
+                }
+            },
+            xaxis: {
+                categories: data.categories,
+                labels: {
+                    style: {
+                        colors: "#ddd",
+                    },
                 }
             },
             yaxis: {

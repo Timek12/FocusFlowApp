@@ -7,7 +7,7 @@ export default function loadTotalTasksImportancePieChart() {
         .then(function (data) {
         var options = {
             chart: {
-                height: 325,
+                height: 310,
                 type: 'pie'
             },
             series: data.series,

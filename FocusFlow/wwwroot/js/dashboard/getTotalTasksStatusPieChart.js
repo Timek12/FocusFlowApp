@@ -7,7 +7,7 @@ export default function loadTotalTasksStatusPieChart() {
         .then(function (data) {
         var options = {
             chart: {
-                height: 345,
+                height: 320,
                 type: 'pie'
             },
             series: data.series,
