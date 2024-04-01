@@ -14,37 +14,9 @@ namespace FocusFlow.Repository
             _db = db;
         }
 
-        public PomodoroSession? CreateSession(string userId, TimeSpan duration)
-        {
-            if (!string.IsNullOrEmpty(userId))
-            {
-                PomodoroSession session = new()
-                {
-                    UserId = userId,
-                    Duration = duration,
-                    isCompleted = false,
-                };
-
-                _db.PomodoroSessions.Add(session);
-
-                return session;
-            }
-
-            return null;
-        }
-
         public void Update(PomodoroSession session)
         {
-            if (!string.IsNullOrEmpty(session.UserId))
-            {
-                _db.PomodoroSessions.Update(session);
-            }
-        }
-
-        public PomodoroSession? GetLatestSession(string userId)
-        {
-            return _db.PomodoroSessions.Where(u => u.UserId == userId && u.isCompleted == false)
-                    .OrderBy(u => u.SessionId).FirstOrDefault();
+            _db.PomodoroSessions.Update(session);
         }
     }
 }
