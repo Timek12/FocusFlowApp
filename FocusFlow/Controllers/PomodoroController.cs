@@ -1,5 +1,5 @@
 ﻿using FocusFlow.Models;
-using FocusFlow.Repository.IRepository;
+using FocusFlow.Services.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,22 +9,22 @@ namespace FocusFlow.Controllers
     [Authorize]
     public class PomodoroController : Controller
     {
-        private readonly IPomodoroRepository _pomodoroRepository;
+        private readonly IPomodoroService _pomodoroService;
         private readonly UserManager<ApplicationUser> _userManager;
         public PomodoroSession PomodoroSession { get; private set; }
-        public PomodoroController(IPomodoroRepository pomodoroRepository, UserManager<ApplicationUser> userManager)
+        public PomodoroController(IPomodoroService pomodoroService, UserManager<ApplicationUser> userManager)
         {
+            _pomodoroService = pomodoroService;
             _userManager = userManager;
-            _pomodoroRepository = pomodoroRepository;
         }
 
         public IActionResult Index()
         {
             string userId = _userManager.GetUserId(User);
-            PomodoroSession = _pomodoroRepository.GetLatestSession(userId);
+            PomodoroSession = _pomodoroService.GetLatestSession(userId);
             if (PomodoroSession is null || PomodoroSession.isCompleted)
             {
-                PomodoroSession = _pomodoroRepository.CreateSession(userId);
+                PomodoroSession = _pomodoroService.CreateSession(userId, new TimeSpan(0, 1, 0));
             }
 
             return View(PomodoroSession);
@@ -34,14 +34,14 @@ namespace FocusFlow.Controllers
         public IActionResult StartTimer([FromBody] string startTime)
         {
             string userId = _userManager.GetUserId(User);
-            PomodoroSession = _pomodoroRepository.GetLatestSession(userId);
+            PomodoroSession = _pomodoroService.GetLatestSession(userId);
             if (PomodoroSession is null)
             {
                 return Json(new { success = false });
             }
 
             PomodoroSession.StartTime = DateTime.Parse(startTime);
-            _pomodoroRepository.UpdateSession(PomodoroSession);
+            _pomodoroService.UpdateSession(PomodoroSession);
 
             return Json(new { success = true });
         }
@@ -50,14 +50,14 @@ namespace FocusFlow.Controllers
         public IActionResult StopTimer([FromBody] string stopTime)
         {
             string userId = _userManager.GetUserId(User);
-            PomodoroSession = _pomodoroRepository.GetLatestSession(userId);
+            PomodoroSession = _pomodoroService.GetLatestSession(userId);
             if (PomodoroSession is null)
             {
                 return Json(new { success = false });
             }
 
             PomodoroSession.EndTime = DateTime.Parse(stopTime);
-            _pomodoroRepository.UpdateSession(PomodoroSession);
+            _pomodoroService.UpdateSession(PomodoroSession);
 
             return Json(new { success = true });
         }
@@ -66,14 +66,14 @@ namespace FocusFlow.Controllers
         public IActionResult FinalizeSession()
         {
             string userId = _userManager.GetUserId(User);
-            PomodoroSession = _pomodoroRepository.GetLatestSession(userId);
+            PomodoroSession = _pomodoroService.GetLatestSession(userId);
             if (PomodoroSession is null)
             {
                 return Json(new { success = false });
             }
 
             PomodoroSession.isCompleted = true;
-            _pomodoroRepository.UpdateSession(PomodoroSession);
+            _pomodoroService.UpdateSession(PomodoroSession);
 
             return Json(new { success = true });
         }
