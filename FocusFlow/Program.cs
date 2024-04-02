@@ -21,6 +21,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
 builder.Services.AddScoped<ITaskService, TaskService>();
+builder.Services.AddScoped<IPomodoroService, PomodoroService>();
 
 var app = builder.Build();
 
