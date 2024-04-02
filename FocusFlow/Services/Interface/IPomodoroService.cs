@@ -1,5 +1,4 @@
-﻿
-using FocusFlow.Models;
+﻿using FocusFlow.Models;
 
 namespace FocusFlow.Services.Interface
 {
