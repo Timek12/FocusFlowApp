@@ -2,6 +2,8 @@ using FocusFlow.Data;
 using FocusFlow.Models;
 using FocusFlow.Repository;
 using FocusFlow.Repository.IRepository;
+using FocusFlow.Services.Implementation;
+using FocusFlow.Services.Interface;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +19,8 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddDefaultTokenProviders();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IDashboardService, DashboardService>();
+builder.Services.AddScoped<ITaskService, TaskService>();
 
 var app = builder.Build();
 
