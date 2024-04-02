@@ -3,6 +3,7 @@ using FocusFlow.Models;
 using FocusFlow.Repository.IRepository;
 using FocusFlow.Services.Interface;
 using FocusFlow.Utility;
+using System.Globalization;
 
 namespace FocusFlow.Services.Implementation
 {
@@ -91,7 +92,7 @@ namespace FocusFlow.Services.Implementation
                 .Concat(mediumImportanceTaskDataDict.Keys)
                 .Concat(highImportanceTaskDataDict.Keys)
                 .Distinct()
-                .OrderBy(date => date)
+                .OrderBy(date => DateTime.ParseExact(date, "dd/MM", new CultureInfo("pl-PL")))
                 .ToArray();
 
             var lowImportanceTaskCountSeries = allDates.Select(date => lowImportanceTaskDataDict
