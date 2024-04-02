@@ -48,7 +48,10 @@ namespace FocusFlow.Repository
                 query = query.AsNoTracking();
             }
 
-            query = query.Where(filter);
+            if(filter is not null)
+            {
+                query = query.Where(filter);
+            }
 
             return query.ToList();
         }
