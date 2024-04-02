@@ -1,7 +1,7 @@
 ﻿using FocusFlow.DTOs;
 using FocusFlow.Models;
 
-namespace FocusFlow.Services.Implementation
+namespace FocusFlow.Services.Interface
 {
     public interface IDashboardService
     {

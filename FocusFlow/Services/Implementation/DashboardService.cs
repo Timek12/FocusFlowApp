@@ -1,10 +1,10 @@
 ﻿using FocusFlow.DTOs;
 using FocusFlow.Models;
 using FocusFlow.Repository.IRepository;
-using FocusFlow.Services.Implementation;
+using FocusFlow.Services.Interface;
 using FocusFlow.Utility;
 
-namespace FocusFlow.Services.Interface
+namespace FocusFlow.Services.Implementation
 {
     public class DashboardService : IDashboardService
     {
