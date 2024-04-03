@@ -60,26 +60,7 @@ namespace FocusFlow.Controllers
                 return RedirectToAction("Error", "Home");
             }
 
-            UserTaskUpdateVM userTaskUpdateVM = new()
-            {
-                UserTask = _taskService.GetTaskById(id),
-                
-                StatusList = Enum.GetValues(typeof(Utility.SD.TaskStatus))
-                .Cast<Utility.SD.TaskStatus>().Select(e => new SelectListItem
-                {
-                    Value = ((int)e).ToString(),
-                    Text = e.ToString()
-                }),
-
-                ImportanceList = Enum.GetValues(typeof(TaskImportance))
-                .Cast<TaskImportance>().Select(e => new SelectListItem
-                {
-                    Value = ((int)e).ToString(),
-                    Text = e.ToString()
-                })
-            };
-
-            userTaskUpdateVM.UserTask.TaskId = id;
+            UserTaskUpdateVM userTaskUpdateVM = _taskService.CreateUserTaskUpdateVM(_userManager.GetUserId(User), id);
 
             if (userTaskUpdateVM.UserTask is null)
             {

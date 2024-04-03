@@ -62,6 +62,31 @@ namespace FocusFlow.Services.Implementation
             };
         }
 
+        public UserTaskUpdateVM CreateUserTaskUpdateVM(string userId, int taskId)
+        {
+            UserTaskUpdateVM userTaskUpdateVM = new()
+            {
+                UserTask = _unitOfWork.Task.Get(u => u.UserId == userId, tracked: true),
+
+                StatusList = Enum.GetValues(typeof(Utility.SD.TaskStatus))
+                .Cast<Utility.SD.TaskStatus>().Select(e => new SelectListItem
+                {
+                    Value = ((int)e).ToString(),
+                    Text = e.ToString()
+                }),
+
+                ImportanceList = Enum.GetValues(typeof(TaskImportance))
+                .Cast<TaskImportance>().Select(e => new SelectListItem
+                {
+                    Value = ((int)e).ToString(),
+                    Text = e.ToString()
+                })
+            };
+
+            userTaskUpdateVM.UserTask.TaskId = taskId;
+            return userTaskUpdateVM;
+        }
+
         public IEnumerable<UserTask> GetAllTasks(string userId, bool isAdmin)
         {
             return isAdmin ? _unitOfWork.Task.GetAll() : _unitOfWork.Task.GetAll(u => u.UserId == userId);
