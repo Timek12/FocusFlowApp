@@ -1,5 +1,6 @@
 ﻿using FocusFlow.Models;
 using FocusFlow.ViewModels;
+using FocusFlow.ViewModels.Interface;
 
 namespace FocusFlow.Services.Interface
 {
@@ -11,7 +12,7 @@ namespace FocusFlow.Services.Interface
         void CreateTask(UserTaskCreateVM userTaskVM, string userId);
         UserTaskCreateVM CreateUserTaskCreateVM();
         UserTaskUpdateVM CreateUserTaskUpdateVM(string userId, int taskId);
-        void UpdateUserTaskCreateVM(UserTaskCreateVM userTaskVM);
+        void UpdateUserTaskVM(IUserTaskVM userTaskVM);
         void AddTask(UserTask task);
         void UpdateTask(UserTask task);
         void RemoveTask(UserTask task);

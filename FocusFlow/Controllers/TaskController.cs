@@ -49,7 +49,7 @@ namespace FocusFlow.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            _taskService.UpdateUserTaskCreateVM(userTaskVM);
+            _taskService.UpdateUserTaskVM(userTaskVM);
             return View(userTaskVM);
         }
 
@@ -84,20 +84,7 @@ namespace FocusFlow.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-
-            userTaskUpdateVM.StatusList = Enum.GetValues(typeof(Utility.SD.TaskStatus))
-                .Cast<Utility.SD.TaskStatus>().Select(e => new SelectListItem
-                {
-                    Value = ((int)e).ToString(),
-                    Text = e.ToString()
-                });
-
-            userTaskUpdateVM.ImportanceList = Enum.GetValues(typeof(TaskImportance))
-            .Cast<TaskImportance>().Select(e => new SelectListItem
-            {
-                Value = ((int)e).ToString(),
-                Text = e.ToString()
-            });
+            _taskService.UpdateUserTaskVM(userTaskUpdateVM);
 
             return View(userTaskUpdateVM);
         }

@@ -2,6 +2,7 @@
 using FocusFlow.Repository.IRepository;
 using FocusFlow.Services.Interface;
 using FocusFlow.ViewModels;
+using FocusFlow.ViewModels.Interface;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using static FocusFlow.Utility.SD;
@@ -114,7 +115,7 @@ namespace FocusFlow.Services.Implementation
             _unitOfWork.Save();
         }
 
-        public void UpdateUserTaskCreateVM(UserTaskCreateVM userTaskVM)
+        public void UpdateUserTaskVM(IUserTaskVM userTaskVM)
         {
             if(userTaskVM is not null)
             {
