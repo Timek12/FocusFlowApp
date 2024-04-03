@@ -1,13 +1,13 @@
-﻿using FocusFlow.Models;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel;
 using static FocusFlow.Utility.SD;
 using System.ComponentModel.DataAnnotations;
+using FocusFlow.ViewModels.Interface;
 
 namespace FocusFlow.ViewModels
 {
-    public class UserTaskCreateVM
+    public class UserTaskCreateVM : IUserTaskVM
     {
         [Required]
         public string Name { get; set; }
