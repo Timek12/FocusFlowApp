@@ -1,9 +1,9 @@
-﻿using FocusFlow.Models;
+﻿using FocusFlow.DTOs;
+using FocusFlow.Models;
 using FocusFlow.Repository.IRepository;
 using FocusFlow.Services.Interface;
 using FocusFlow.ViewModels;
 using FocusFlow.ViewModels.Interface;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using static FocusFlow.Utility.SD;
 
@@ -91,6 +91,29 @@ namespace FocusFlow.Services.Implementation
         public IEnumerable<UserTask> GetAllTasks(string userId, bool isAdmin)
         {
             return isAdmin ? _unitOfWork.Task.GetAll() : _unitOfWork.Task.GetAll(u => u.UserId == userId);
+        }
+
+        public IEnumerable<TaskDTO> GetAllTasksDTO(string userId)
+        {
+            if(!string.IsNullOrEmpty(userId))
+            {
+                IEnumerable<UserTask> tasks = _unitOfWork.Task.GetAll(u => u.UserId == userId);
+
+                if(tasks.Any())
+                {
+                    IEnumerable<TaskDTO> tasksDTO = tasks.Select(u => new TaskDTO()
+                    {
+                        Name = u.Name,
+                        Description = u.Description,
+                        StartDate = u.CreatedAt.ToString("yyyy-MM-dd"),
+                        EndDate = u.Deadline.ToString("yyyy-MM-dd")
+                    });
+
+                    return tasksDTO;
+                }
+            }
+
+            return Enumerable.Empty<TaskDTO>();
         }
 
         public UserTask? GetTaskById(int taskId)

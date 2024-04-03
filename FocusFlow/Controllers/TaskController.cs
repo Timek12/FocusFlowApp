@@ -1,7 +1,6 @@
 ﻿using FocusFlow.Models;
 using FocusFlow.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using static FocusFlow.Utility.SD;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -97,7 +96,6 @@ namespace FocusFlow.Controllers
                 return RedirectToAction("Error", "Home");
             }
 
-
             var userTaskFromDb = _taskService.GetTaskById(id);
             if (userTaskFromDb == null)
             {
@@ -111,19 +109,9 @@ namespace FocusFlow.Controllers
 
         public async Task<IActionResult> GetAllTasks()
         {
-            var currentUser = await _userManager.GetUserAsync(User);
-
-            IEnumerable<UserTask> tasks = _taskService.GetAllTasks(currentUser.Id, false);
-            IEnumerable<TaskDTO> tasksDTO = tasks.Select(u => new TaskDTO()
-            {
-                Name = u.Name,
-                Description = u.Description,
-                StartDate = u.CreatedAt.ToString("yyyy-MM-dd"),
-                EndDate = u.Deadline.ToString("yyyy-MM-dd")
-            });
+            IEnumerable<TaskDTO> tasksDTO = _taskService.GetAllTasksDTO(_userManager.GetUserId(User));
 
             string json = JsonConvert.SerializeObject(tasksDTO);
-
             return Content(json, "application/json");
         }
     }

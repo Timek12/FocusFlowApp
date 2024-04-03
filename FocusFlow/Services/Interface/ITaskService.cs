@@ -1,4 +1,5 @@
-﻿using FocusFlow.Models;
+﻿using FocusFlow.DTOs;
+using FocusFlow.Models;
 using FocusFlow.ViewModels;
 using FocusFlow.ViewModels.Interface;
 
@@ -7,6 +8,7 @@ namespace FocusFlow.Services.Interface
     public interface ITaskService
     {
         IEnumerable<UserTask> GetAllTasks(string userId, bool isAdmin);
+        IEnumerable<TaskDTO> GetAllTasksDTO(string userId);
         UserTask? GetTaskById(int taskId);
         IQueryable<UserTask> GetUserTasksQuery();
         void CreateTask(UserTaskCreateVM userTaskVM, string userId);
