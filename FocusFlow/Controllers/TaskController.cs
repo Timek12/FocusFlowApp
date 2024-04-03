@@ -60,19 +60,7 @@ namespace FocusFlow.Controllers
         {
             if (ModelState.IsValid)
             {
-                UserTask userTask = new()
-                {
-                    Name = userTaskVM.Name,
-                    Description = userTaskVM.Description,
-                    Status = userTaskVM.Status,
-                    Importance = userTaskVM.Importance,
-                    CreatedAt = DateTime.Now,
-                    Deadline = userTaskVM.Deadline,
-                    UserId = _userManager.GetUserId(User)
-                };
-
-                _taskService.AddTask(userTask);
-
+                _taskService.CreateTask(userTaskVM, _userManager.GetUserId(User));
                 return RedirectToAction(nameof(Index));
             }
 

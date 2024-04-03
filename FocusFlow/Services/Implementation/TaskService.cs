@@ -1,6 +1,8 @@
 ﻿using FocusFlow.Models;
 using FocusFlow.Repository.IRepository;
 using FocusFlow.Services.Interface;
+using FocusFlow.ViewModels;
+using Microsoft.AspNetCore.Identity;
 
 namespace FocusFlow.Services.Implementation
 {
@@ -17,6 +19,26 @@ namespace FocusFlow.Services.Implementation
         {
             _unitOfWork.Task.Add(task);
             _unitOfWork.Save();
+        }
+
+        public void CreateTask(UserTaskCreateVM userTaskVM, string userId)
+        {
+            if(userTaskVM is not null)
+            {
+                UserTask userTask = new()
+                {
+                    Name = userTaskVM.Name,
+                    Description = userTaskVM.Description,
+                    Status = userTaskVM.Status,
+                    Importance = userTaskVM.Importance,
+                    CreatedAt = DateTime.Now,
+                    Deadline = userTaskVM.Deadline,
+                    UserId = userId
+                };
+
+                _unitOfWork.Task.Add(userTask);
+                _unitOfWork.Save();
+            }
         }
 
         public IEnumerable<UserTask> GetAllTasks(string userId, bool isAdmin)
