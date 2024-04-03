@@ -3,6 +3,8 @@ using FocusFlow.Repository.IRepository;
 using FocusFlow.Services.Interface;
 using FocusFlow.ViewModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using static FocusFlow.Utility.SD;
 
 namespace FocusFlow.Services.Implementation
 {
@@ -39,6 +41,25 @@ namespace FocusFlow.Services.Implementation
                 _unitOfWork.Task.Add(userTask);
                 _unitOfWork.Save();
             }
+        }
+
+        public UserTaskCreateVM CreateUserTaskCreateVM()
+        {
+            return new UserTaskCreateVM()
+            {
+                StatusList = Enum.GetValues(typeof(Utility.SD.TaskStatus))
+                .Cast<Utility.SD.TaskStatus>().Select(e => new SelectListItem
+                {
+                    Value = ((int)e).ToString(),
+                    Text = e.ToString()
+                }),
+                ImportanceList = Enum.GetValues(typeof(TaskImportance))
+                .Cast<TaskImportance>().Select(e => new SelectListItem
+                {
+                    Value = ((int)e).ToString(),
+                    Text = e.ToString()
+                }),
+            };
         }
 
         public IEnumerable<UserTask> GetAllTasks(string userId, bool isAdmin)

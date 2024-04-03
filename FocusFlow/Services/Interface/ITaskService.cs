@@ -9,6 +9,7 @@ namespace FocusFlow.Services.Interface
         UserTask? GetTaskById(int taskId);
         IQueryable<UserTask> GetUserTasksQuery();
         void CreateTask(UserTaskCreateVM userTaskVM, string userId);
+        UserTaskCreateVM CreateUserTaskCreateVM();
         void AddTask(UserTask task);
         void UpdateTask(UserTask task);
         void RemoveTask(UserTask task);

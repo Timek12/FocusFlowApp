@@ -36,22 +36,7 @@ namespace FocusFlow.Controllers
 
         public IActionResult Create()
         {
-            UserTaskCreateVM userTaskVM = new()
-            {
-                StatusList = Enum.GetValues(typeof(Utility.SD.TaskStatus))
-                .Cast<Utility.SD.TaskStatus>().Select(e => new SelectListItem
-                {
-                    Value = ((int)e).ToString(),
-                    Text = e.ToString()
-                }),
-                ImportanceList = Enum.GetValues(typeof(TaskImportance))
-                .Cast<TaskImportance>().Select(e => new SelectListItem
-                {
-                    Value = ((int)e).ToString(),
-                    Text = e.ToString()
-                }),
-            };
-
+            UserTaskCreateVM userTaskVM = _taskService.CreateUserTaskCreateVM();
             return View(userTaskVM);
         }
 
