@@ -32,15 +32,6 @@ namespace FocusFlow.Services.Implementation
             return null;
         }
 
-        public void Update(PomodoroSession session)
-        {
-            if (!string.IsNullOrEmpty(session.UserId))
-            {
-                _unitOfWork.Pomodoro.Update(session);
-                _unitOfWork.Save();
-            }
-        }
-
         public PomodoroSession? GetLatestSession(string userId)
         {
             if (!string.IsNullOrEmpty(userId))
