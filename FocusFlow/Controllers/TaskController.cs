@@ -49,20 +49,7 @@ namespace FocusFlow.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            userTaskVM.StatusList = Enum.GetValues(typeof(Utility.SD.TaskStatus))
-                .Cast<Utility.SD.TaskStatus>().Select(e => new SelectListItem
-                {
-                    Value = ((int)e).ToString(),
-                    Text = e.ToString()
-                });
-
-            userTaskVM.ImportanceList = Enum.GetValues(typeof(TaskImportance))
-            .Cast<TaskImportance>().Select(e => new SelectListItem
-            {
-                Value = ((int)e).ToString(),
-                Text = e.ToString()
-            });
-
+            _taskService.UpdateUserTaskCreateVM(userTaskVM);
             return View(userTaskVM);
         }
 

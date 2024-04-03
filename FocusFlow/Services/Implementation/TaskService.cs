@@ -88,5 +88,25 @@ namespace FocusFlow.Services.Implementation
             _unitOfWork.Task.Update(task);
             _unitOfWork.Save();
         }
+
+        public void UpdateUserTaskCreateVM(UserTaskCreateVM userTaskVM)
+        {
+            if(userTaskVM is not null)
+            {
+                userTaskVM.StatusList = Enum.GetValues(typeof(Utility.SD.TaskStatus))
+                .Cast<Utility.SD.TaskStatus>().Select(e => new SelectListItem
+                {
+                    Value = ((int)e).ToString(),
+                    Text = e.ToString()
+                });
+
+                userTaskVM.ImportanceList = Enum.GetValues(typeof(TaskImportance))
+                .Cast<TaskImportance>().Select(e => new SelectListItem
+                {
+                    Value = ((int)e).ToString(),
+                    Text = e.ToString()
+                });
+            }
+        }
     }
 }
