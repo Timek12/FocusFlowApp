@@ -1,8 +1,6 @@
 ﻿using FocusFlow.Data;
 using FocusFlow.Models;
 using FocusFlow.Repository.IRepository;
-using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 namespace FocusFlow.Repository
 {
